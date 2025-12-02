@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Divine Gallery | ISKCON Ahillyanagar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo"><i class="fas fa-om"></i> ISKCON Ahillyanagar</a>
+            <div class="mobile-menu-btn"><i class="fas fa-bars"></i></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="events.html">Events</a></li>
+                <li><a href="darshan.html" class="active">Gallery</a></li>
+                <li><a href="store.html">Store</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="donation.html" class="btn">Donate</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="hero" style="height: 50vh; background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('images/temple_hall.png');">
+        <div class="container hero-content">
+            <h1>Divine Gallery</h1>
+            <p>Glimpses of the Deities, Temple Life, and Community Service</p>
+        </div>
+    </header>
+
+    <section class="gallery-section" style="padding: 80px 0; background-color: var(--bg-color);">
+        <div class="container">
+            <div class="section-title">Darshan & Activities</div>
+            <p style="text-align: center; max-width: 600px; margin: 0 auto 60px; color: var(--text-light);">
+                Immerse yourself in the divine beauty of Their Lordships and the vibrant temple activities.
+            </p>
+            
+            <div class="gallery-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 32px;">
+                <!-- Image 1 -->
+                <div class="gallery-item" onclick="openLightbox('images/radha_krishna_real.png')" style="cursor: pointer; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-md); transition: transform 0.3s ease; height: 400px; position: relative;">
+                    <img src="images/radha_krishna_real.png" alt="Radha Krishna" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
+                    <div class="gallery-overlay" style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 24px; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); color: white;">
+                        <h3 style="font-size: 1.4rem; margin: 0; font-family: var(--font-heading);">Sri Sri Radha Kunjabihari</h3>
+                        <p style="margin: 4px 0 0; opacity: 0.9; font-size: 0.9rem;">Daily Darshan</p>
+                    </div>
+                </div>
+                <!-- Image 2 -->
+                <div class="gallery-item" onclick="openLightbox('images/jagannath_real.png')" style="cursor: pointer; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-md); transition: transform 0.3s ease; height: 400px; position: relative;">
+                    <img src="images/jagannath_real.png" alt="Jagannath Baladev Subhadra" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
+                    <div class="gallery-overlay" style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 24px; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); color: white;">
+                        <h3 style="font-size: 1.4rem; margin: 0; font-family: var(--font-heading);">Sri Jagannath Baladev Subhadra</h3>
+                        <p style="margin: 4px 0 0; opacity: 0.9; font-size: 0.9rem;">Raj Bhoga Darshan</p>
+                    </div>
+                </div>
+                <!-- Image 3 -->
+                <div class="gallery-item" onclick="openLightbox('images/puja.png')" style="cursor: pointer; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-md); transition: transform 0.3s ease; height: 400px; position: relative;">
+                    <img src="images/puja.png" alt="Gaura Nitai" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
+                    <div class="gallery-overlay" style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 24px; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); color: white;">
+                        <h3 style="font-size: 1.4rem; margin: 0; font-family: var(--font-heading);">Sri Sri Gaura Nitai</h3>
+                        <p style="margin: 4px 0 0; opacity: 0.9; font-size: 0.9rem;">Shringar Darshan</p>
+                    </div>
+                </div>
+                <!-- Image 4 -->
+                <div class="gallery-item" onclick="openLightbox('images/temple_hall.png')" style="cursor: pointer; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-md); transition: transform 0.3s ease; height: 400px; position: relative;">
+                    <img src="images/temple_hall.png" alt="Temple Hall" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
+                    <div class="gallery-overlay" style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 24px; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); color: white;">
+                        <h3 style="font-size: 1.4rem; margin: 0; font-family: var(--font-heading);">Temple Altar</h3>
+                        <p style="margin: 4px 0 0; opacity: 0.9; font-size: 0.9rem;">Main Hall View</p>
+                    </div>
+                </div>
+                <!-- Image 5 -->
+                <div class="gallery-item" onclick="openLightbox('images/construction.png')" style="cursor: pointer; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-md); transition: transform 0.3s ease; height: 400px; position: relative;">
+                    <img src="images/construction.png" alt="Temple Construction" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
+                    <div class="gallery-overlay" style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 24px; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); color: white;">
+                        <h3 style="font-size: 1.4rem; margin: 0; font-family: var(--font-heading);">Temple Construction</h3>
+                        <p style="margin: 4px 0 0; opacity: 0.9; font-size: 0.9rem;">Future Project</p>
+                    </div>
+                </div>
+                <!-- Image 6 -->
+                <div class="gallery-item" onclick="openLightbox('images/food_dist.png')" style="cursor: pointer; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-md); transition: transform 0.3s ease; height: 400px; position: relative;">
+                    <img src="images/food_dist.png" alt="Food Distribution" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
+                    <div class="gallery-overlay" style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 24px; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); color: white;">
+                        <h3 style="font-size: 1.4rem; margin: 0; font-family: var(--font-heading);">Food Distribution</h3>
+                        <p style="margin: 4px 0 0; opacity: 0.9; font-size: 0.9rem;">Community Service</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>ISKCON Ahillyanagar</h3>
+                    <p>International Society for Krishna Consciousness</p>
+                    <p style="margin-top: 10px; font-size: 0.9rem; opacity: 0.8;">Founder Acharya: His Divine Grace A.C. Bhaktivedanta Swami Prabhupada</p>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul style="opacity: 0.8; font-size: 0.95rem; line-height: 2;">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="store.html">Store</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Connect</h3>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/iskconahilyanagar" target="_blank"><i class="fab fa-facebook"></i></a>
+                        <a href="https://www.instagram.com/iskconahilyanagar" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@ISKCONAhilyanagar" target="_blank"><i class="fab fa-youtube"></i></a>
+                    </div>
+                    <p style="margin-top: 20px;">Email: info@iskconahillyanagar.com</p>
+                </div>
+            </div>
+            <div class="copyright"><p>&copy; 2024 ISKCON Ahillyanagar. All rights reserved.</p></div>
+        </div>
+    </footer>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="modal-overlay" onclick="closeLightbox()">
+        <span class="close-modal" style="position: absolute; top: 20px; right: 30px; color: white; font-size: 3rem;">&times;</span>
+        <img id="lightbox-img" src="" style="max-height: 90vh; max-width: 90vw; margin: auto; display: block; position: relative; top: 50%; transform: translateY(-50%); border-radius: 10px; box-shadow: 0 0 50px rgba(0,0,0,0.5);">
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

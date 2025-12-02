@@ -1,0 +1,67 @@
+from flask import Flask, request, jsonify, send_from_directory
+from flask_cors import CORS
+import os
+import database
+
+app = Flask(__name__, static_folder='../')
+CORS(app)
+
+# Initialize DB on start
+database.init_db()
+
+@app.route('/')
+def serve_index():
+    return send_from_directory(app.static_folder, 'index.html')
+
+@app.route('/<path:path>')
+def serve_static(path):
+    return send_from_directory(app.static_folder, path)
+
+# --- API Endpoints ---
+
+@app.route('/api/donations', methods=['GET', 'POST', 'DELETE'])
+def handle_donations():
+    if request.method == 'POST':
+        data = request.json
+        database.save_donation(data)
+        return jsonify({'status': 'success', 'message': 'Donation saved'})
+    elif request.method == 'GET':
+        return jsonify(database.get_donations())
+    elif request.method == 'DELETE':
+        database.clear_table('donations')
+        return jsonify({'status': 'success', 'message': 'Donations cleared'})
+
+@app.route('/api/contacts', methods=['GET', 'POST', 'DELETE'])
+def handle_contacts():
+    if request.method == 'POST':
+        data = request.json
+        database.save_contact(data)
+        return jsonify({'status': 'success', 'message': 'Contact saved'})
+    elif request.method == 'GET':
+        return jsonify(database.get_contacts())
+    elif request.method == 'DELETE':
+        database.clear_table('contacts')
+        return jsonify({'status': 'success', 'message': 'Contacts cleared'})
+
+@app.route('/api/subscribers', methods=['GET', 'POST', 'DELETE'])
+def handle_subscribers():
+    if request.method == 'POST':
+        email = request.json.get('email')
+        success = database.save_subscriber(email)
+        if success:
+            return jsonify({'status': 'success', 'message': 'Subscriber added'})
+        else:
+            return jsonify({'status': 'error', 'message': 'Email already exists'}), 400
+    elif request.method == 'GET':
+        return jsonify(database.get_subscribers())
+    elif request.method == 'DELETE':
+        database.clear_table('subscribers')
+        return jsonify({'status': 'success', 'message': 'Subscribers cleared'})
+
+import os
+
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    print("Starting ISKCON Server...")
+    print(f"Local Access: http://localhost:{port}")
+    app.run(debug=True, host='0.0.0.0', port=port)

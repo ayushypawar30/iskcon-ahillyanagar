@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Payment | ISKCON Ahillyanagar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #16a34a;
+            --primary-dark: #15803d;
+            --bg: #f3f4f6;
+            --surface: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --error: #ef4444;
+        }
+
+        * { box-sizing: border-box; outline: none; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg); margin: 0; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
+
+        .payment-wrapper {
+            background: var(--surface);
+            width: 100%;
+            max-width: 900px;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px -5px rgba(0,0,0,0.1);
+            display: flex;
+            overflow: hidden;
+            min-height: 600px;
+        }
+
+        /* Sidebar (Payment Methods) */
+        .sidebar {
+            width: 300px;
+            background: #f8fafc;
+            border-right: 1px solid var(--border);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar h3 {
+            margin: 0 0 20px 10px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .method-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--text-main);
+            font-weight: 500;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .method-item:hover { background: #e2e8f0; }
+        .method-item.active {
+            background: #ffffff;
+            color: var(--primary);
+            border-color: var(--border);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .method-item i { width: 30px; font-size: 1.2rem; }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
+        }
+
+        .merchant-info h2 { margin: 0; font-size: 1.25rem; color: var(--text-main); }
+        .merchant-info p { margin: 5px 0 0; color: var(--text-muted); font-size: 0.9rem; display: flex; align-items: center; gap: 5px; }
+        .verified-badge { color: var(--primary); font-size: 0.8rem; background: #dcfce7; padding: 2px 8px; border-radius: 99px; }
+
+        .amount-box { text-align: right; }
+        .amount-label { font-size: 0.85rem; color: var(--text-muted); }
+        .amount-value { font-size: 1.75rem; font-weight: 700; color: var(--text-main); }
+
+        /* Forms */
+        .payment-form { display: none; animation: fadeIn 0.3s ease; }
+        .payment-form.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-size: 0.9rem; font-weight: 500; color: var(--text-main); }
+        .input-wrapper { position: relative; }
+        .input-wrapper i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+        
+        input, select {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+            font-family: inherit;
+        }
+        
+        input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1); }
+        input.error { border-color: var(--error); }
+        
+        .row { display: flex; gap: 20px; }
+        .col { flex: 1; }
+
+        /* QR Code */
+        .qr-container { text-align: center; padding: 20px; background: #f8fafc; border-radius: 12px; border: 1px dashed var(--border); }
+        .qr-code { width: 180px; height: 180px; background: white; padding: 10px; margin: 0 auto 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .timer { font-family: monospace; color: var(--error); font-weight: 600; margin-top: 10px; }
+
+        /* Footer */
+        .footer-action { margin-top: auto; padding-top: 30px; }
+        .pay-btn {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .pay-btn:hover { background: var(--primary-dark); }
+        .pay-btn:disabled { background: #cbd5e1; cursor: not-allowed; }
+
+        .secure-note { text-align: center; margin-top: 15px; font-size: 0.8rem; color: var(--text-muted); display: flex; justify-content: center; align-items: center; gap: 6px; }
+
+        /* Loader */
+        .loader-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.95);
+            display: none;
+            justify-content: center; align-items: center; flex-direction: column;
+            z-index: 50;
+        }
+        .spinner { width: 50px; height: 50px; border: 4px solid #e2e8f0; border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .payment-wrapper { flex-direction: column; min-height: auto; }
+            .sidebar { width: 100%; flex-direction: row; overflow-x: auto; padding: 15px; border-right: none; border-bottom: 1px solid var(--border); }
+            .sidebar h3 { display: none; }
+            .method-item { margin-bottom: 0; margin-right: 10px; white-space: nowrap; }
+            .main-content { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="payment-wrapper">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h3>Payment Methods</h3>
+            <div class="method-item active" onclick="switchTab('upi')">
+                <i class="fas fa-qrcode"></i> UPI / QR
+            </div>
+            <div class="method-item" onclick="switchTab('card')">
+                <i class="far fa-credit-card"></i> Card
+            </div>
+            <div class="method-item" onclick="switchTab('netbanking')">
+                <i class="fas fa-university"></i> Net Banking
+            </div>
+            <div class="method-item" onclick="switchTab('wallet')">
+                <i class="fas fa-wallet"></i> Wallet
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <div class="merchant-info">
+                    <h2>ISKCON Ahillyanagar</h2>
+                    <p><i class="fas fa-check-circle verified-badge"></i> Verified Merchant</p>
+                    <p style="font-size: 0.8rem; margin-top: 5px;">Order ID: <span id="order-id">#ISK-0000</span></p>
+                </div>
+                <div class="amount-box">
+                    <div class="amount-label">Total Amount</div>
+                    <div class="amount-value" id="display-amount">₹0</div>
+                </div>
+            </div>
+
+            <!-- UPI / QR Form -->
+            <div id="form-upi" class="payment-form active">
+                <div class="qr-container">
+                    <div style="font-weight: 600; margin-bottom: 15px;">Scan with any UPI App</div>
+                    <div class="qr-code" style="display: flex; align-items: center; justify-content: center; border: 1px solid #eee;">
+                        <i class="fas fa-qrcode" style="font-size: 100px; color: #333;"></i>
+                    </div>
+                    <div class="timer">Session expires in <span id="timer">05:00</span></div>
+                </div>
+                <div style="text-align: center; margin: 20px 0; color: var(--text-muted); font-size: 0.9rem;">OR</div>
+                <div class="form-group">
+                    <label>Enter UPI ID</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-at"></i>
+                        <input type="text" id="upi-id" placeholder="username@oksbi" oninput="validateUPI()">
+                    </div>
+                    <div id="upi-error" style="color: var(--error); font-size: 0.8rem; margin-top: 5px; display: none;">Invalid UPI ID</div>
+                </div>
+            </div>
+
+            <!-- Card Form -->
+            <div id="form-card" class="payment-form">
+                <div class="form-group">
+                    <label>Card Number</label>
+                    <div class="input-wrapper">
+                        <i class="far fa-credit-card"></i>
+                        <input type="text" id="card-number" placeholder="0000 0000 0000 0000" maxlength="19" oninput="formatCard(this)">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Expiry Date</label>
+                            <div class="input-wrapper">
+                                <i class="far fa-calendar-alt"></i>
+                                <input type="text" id="card-expiry" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label>CVV</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" id="card-cvv" placeholder="123" maxlength="3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Card Holder Name</label>
+                    <div class="input-wrapper">
+                        <i class="far fa-user"></i>
+                        <input type="text" id="card-name" placeholder="Name on Card">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Net Banking Form -->
+            <div id="form-netbanking" class="payment-form">
+                <div class="form-group">
+                    <label>Select Bank</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-university"></i>
+                        <select style="padding-left: 45px;">
+                            <option>State Bank of India</option>
+                            <option>HDFC Bank</option>
+                            <option>ICICI Bank</option>
+                            <option>Axis Bank</option>
+                            <option>Kotak Mahindra Bank</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="padding: 20px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; color: #166534; font-size: 0.9rem;">
+                    <i class="fas fa-info-circle"></i> You will be redirected to your bank's secure login page.
+                </div>
+            </div>
+
+            <!-- Wallet Form -->
+            <div id="form-wallet" class="payment-form">
+                <div class="form-group">
+                    <label>Select Wallet</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-wallet"></i>
+                        <select style="padding-left: 45px;">
+                            <option>Paytm</option>
+                            <option>PhonePe</option>
+                            <option>Amazon Pay</option>
+                            <option>Freecharge</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Action -->
+            <div class="footer-action">
+                <button class="pay-btn" id="pay-btn" onclick="processPayment()">
+                    <i class="fas fa-lock"></i> Pay <span id="btn-amount">₹0</span>
+                </button>
+                <div class="secure-note">
+                    <i class="fas fa-shield-alt"></i> 100% Secure Payment via 256-bit SSL
+                </div>
+            </div>
+
+            <!-- Loader -->
+            <div class="loader-overlay" id="loader">
+                <div class="spinner"></div>
+                <h3 id="loader-text">Processing Payment</h3>
+                <p style="color: var(--text-muted);">Please do not close this window...</p>
+            </div>
+
+            <!-- OTP Verification Modal -->
+            <div class="loader-overlay" id="otp-modal" style="background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);">
+                <div style="background: white; padding: 30px; border-radius: 16px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.2);">
+                    <div style="margin-bottom: 20px;">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" style="height: 24px; opacity: 0.7;" alt="Bank Logo">
+                    </div>
+                    <h3 style="margin: 0 0 10px;">Authentication Required</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
+                        Please enter the One Time Password (OTP) sent to your mobile number ending in <strong>XXXXX 8899</strong>.
+                    </p>
+                    
+                    <div class="form-group">
+                        <input type="text" id="otp-input" placeholder="Enter 4-digit OTP" maxlength="4" style="text-align: center; letter-spacing: 5px; font-size: 1.5rem; font-weight: 700;">
+                    </div>
+                    
+                    <button class="pay-btn" onclick="verifyPayment()">Submit</button>
+                    <p style="margin-top: 15px; font-size: 0.8rem; color: var(--primary); cursor: pointer;">Resend OTP</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/database.js"></script>
+    <script>
+        // --- Initialization ---
+        const urlParams = new URLSearchParams(window.location.search);
+        const amount = urlParams.get('amount') || '0';
+        const name = urlParams.get('name') || 'Anonymous';
+        const email = urlParams.get('email') || 'anonymous@example.com';
+        const purpose = urlParams.get('type') || 'General Donation';
+        const orderId = 'ISK-' + Math.floor(100000 + Math.random() * 900000);
+
+        document.getElementById('display-amount').textContent = '₹' + amount;
+        document.getElementById('btn-amount').textContent = '₹' + amount;
+        document.getElementById('order-id').textContent = '#' + orderId;
+        
+        // ... (rest of code)
+
+        // --- Verify OTP & Finish ---
+        function verifyPayment() {
+            // ... (validation code)
+
+            setTimeout(() => {
+                try {
+                    if (window.db) {
+                        window.db.saveDonation({
+                            donorName: name,
+                            amount: amount,
+                            email: email,
+                            orderId: orderId,
+                            purpose: purpose
+                        });
+                    } else {
+                        console.warn('Database not loaded');
+                    }
+                } catch (e) {
+                    console.error('Error saving:', e);
+                }
+                
+                window.location.href = 'donation-success.html?name=' + encodeURIComponent(name);
+            }, 2000);
+        }
+
+        // --- Tab Switching ---
+        function switchTab(mode) {
+            // Update Sidebar
+            document.querySelectorAll('.method-item').forEach(item => item.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            // Update Forms
+            document.querySelectorAll('.payment-form').forEach(form => form.classList.remove('active'));
+            document.getElementById('form-' + mode).classList.add('active');
+        }
+
+        // --- Input Formatting & Validation ---
+        function formatCard(input) {
+            let value = input.value.replace(/\D/g, '');
+            value = value.replace(/(.{4})/g, '$1 ').trim();
+            input.value = value;
+        }
+
+        function formatExpiry(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            input.value = value;
+        }
+
+        function validateUPI() {
+            const input = document.getElementById('upi-id');
+            const error = document.getElementById('upi-error');
+            if (input.value.includes('@') && input.value.length > 5) {
+                error.style.display = 'none';
+                input.style.borderColor = '#e2e8f0';
+                return true;
+            } else {
+                if(input.value.length > 0) {
+                    error.style.display = 'block';
+                    input.style.borderColor = '#ef4444';
+                }
+                return false;
+            }
+        }
+
+        // --- Timer Logic ---
+        let timeLeft = 300; // 5 minutes
+        setInterval(() => {
+            if (timeLeft <= 0) return;
+            timeLeft--;
+            const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            const s = (timeLeft % 60).toString().padStart(2, '0');
+            document.getElementById('timer').textContent = `${m}:${s}`;
+        }, 1000);
+
+        let currentOTP = null;
+
+        // --- Process Payment ---
+        function processPayment() {
+            const loader = document.getElementById('loader');
+            loader.style.display = 'flex';
+            document.getElementById('loader-text').textContent = 'Contacting Bank...';
+            
+            // Generate OTP
+            currentOTP = Math.floor(1000 + Math.random() * 9000);
+
+            // Simulate delay then show OTP
+            setTimeout(() => {
+                loader.style.display = 'none';
+                document.getElementById('otp-modal').style.display = 'flex';
+                document.getElementById('otp-input').value = ''; // Clear previous input
+                document.getElementById('otp-input').focus();
+                
+                // Simulate SMS
+                setTimeout(() => {
+                    alert(`💬 MESSAGE FROM BANK:\n\nYour OTP for transaction #${orderId} is: ${currentOTP}\n\nDo not share this with anyone.`);
+                }, 500);
+            }, 2000);
+        }
+
+        // --- Verify OTP & Finish ---
+        function verifyPayment() {
+            const inputOtp = document.getElementById('otp-input').value;
+            
+            if (parseInt(inputOtp) !== currentOTP) {
+                alert('❌ INCORRECT OTP!\n\nPlease check the code sent to your mobile and try again.');
+                document.getElementById('otp-input').value = '';
+                document.getElementById('otp-input').focus();
+                return;
+            }
+
+            // Show processing again
+            document.getElementById('otp-modal').style.display = 'none';
+            const loader = document.getElementById('loader');
+            loader.style.display = 'flex';
+            document.getElementById('loader-text').textContent = 'Verifying Transaction...';
+
+            setTimeout(() => {
+                try {
+                    if (window.db) {
+                        window.db.saveDonation({
+                            donorName: name,
+                            amount: amount,
+                            email: email,
+                            orderId: orderId
+                        });
+                    } else {
+                        console.warn('Database not loaded');
+                    }
+                } catch (e) {
+                    console.error('Error saving:', e);
+                }
+                
+                window.location.href = 'donation-success.html?name=' + encodeURIComponent(name);
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

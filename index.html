@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISKCON Ahillyanagar | Hare Krishna</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-om"></i> ISKCON Ahillyanagar
+            </a>
+            <div class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="events.html">Events</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="store.html">Store</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="donation.html" class="btn">Donate</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero fade-in">
+        <div class="container hero-content">
+            <h1 class="fade-in delay-1">Hare Krishna</h1>
+            <p class="fade-in delay-2">Welcome to ISKCON Ahillyanagar. Experience the divine bliss of Lord Krishna's consciousness.</p>
+            <div class="fade-in delay-3">
+                <a href="events.html" class="btn">Upcoming Events</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Temple Timings -->
+    <section class="timings fade-in">
+        <div class="container">
+            <h2 class="section-title">Temple Timings</h2>
+            <div class="timings-grid">
+                <div class="timing-card delay-1">
+                    <h3><i class="fas fa-sun"></i> Morning</h3>
+                    <p>Mangala Arati: 4:30 AM</p>
+                    <p>Darshan Arati: 7:15 AM</p>
+                    <p>Guru Puja: 7:30 AM</p>
+                    <p>Srimad Bhagavatam Class: 8:00 AM</p>
+                </div>
+                <div class="timing-card delay-2">
+                    <h3><i class="fas fa-cloud-sun"></i> Afternoon</h3>
+                    <p>Raj Bhoga Arati: 12:30 PM</p>
+                    <p>Temple Closes: 1:00 PM</p>
+                    <p>Temple Opens: 4:15 PM</p>
+                </div>
+                <div class="timing-card delay-3">
+                    <h3><i class="fas fa-moon"></i> Evening</h3>
+                    <p>Tulsi Puja: 6:45 PM</p>
+                    <p>Gaura Arati: 7:00 PM</p>
+                    <p>Bhagavad Gita Class: 8:00 PM</p>
+                    <p>Temple Closes: 9:00 PM</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Daily Darshan Preview -->
+    <section class="darshan">
+        <div class="container">
+            <h2 class="section-title">Daily Darshan</h2>
+            <div class="darshan-slider">
+                <!-- Unique Darshan Images -->
+                <div class="darshan-card" onclick="openLightbox('images/radha_krishna_real.png')">
+                    <img src="images/radha_krishna_real.png" alt="Sri Sri Radha Kunjabihari" class="darshan-img">
+                    <div class="darshan-info">
+                        <h3>Sri Sri Radha Kunjabihari</h3>
+                        <p>Mangala Arati Darshan</p>
+                    </div>
+                </div>
+                <div class="darshan-card" onclick="openLightbox('images/puja.png')">
+                    <img src="images/puja.png" alt="Sri Sri Gaura Nitai" class="darshan-img">
+                    <div class="darshan-info">
+                        <h3>Sri Sri Gaura Nitai</h3>
+                        <p>Shringar Darshan</p>
+                    </div>
+                </div>
+                <div class="darshan-card" onclick="openLightbox('images/jagannath_real.png')">
+                    <img src="images/jagannath_real.png" alt="Sri Jagannath Baladev Subhadra" class="darshan-img">
+                    <div class="darshan-info">
+                        <h3>Sri Jagannath Baladev Subhadra</h3>
+                        <p>Raj Bhoga Darshan</p>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="darshan.html" class="btn btn-secondary">View Full Gallery</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Donation CTA -->
+    <section class="donation-cta">
+        <div class="container">
+            <h2>Support the Temple Construction</h2>
+            <p>Your generous donation helps us serve the community and maintain the temple standards. Every contribution counts.</p>
+            
+            <div class="donation-images" style="display: flex; justify-content: center; gap: 24px; margin-top: 40px; margin-bottom: 48px; flex-wrap: wrap;">
+                <img src="images/construction.png" alt="Temple Construction" style="width: 300px; height: 220px; object-fit: cover; border-radius: 12px; box-shadow: var(--shadow-md);">
+                <img src="images/food_dist.png" alt="Food Distribution" style="width: 300px; height: 220px; object-fit: cover; border-radius: 12px; box-shadow: var(--shadow-md);">
+            </div>
+
+            <a href="donation.html" class="btn">Donate Now</a>
+        </div>
+    </section>
+
+    <!-- Spacing for Footer -->
+    <div style="height: 60px;"></div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>ISKCON Ahillyanagar</h3>
+                    <p>International Society for Krishna Consciousness</p>
+                    <p>Founder Acharya: His Divine Grace A.C. Bhaktivedanta Swami Prabhupada</p>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="store.html">Store</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Connect</h3>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/iskconahilyanagar" target="_blank"><i class="fab fa-facebook"></i></a>
+                        <a href="https://www.instagram.com/iskconahilyanagar" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@ISKCONAhilyanagar" target="_blank"><i class="fab fa-youtube"></i></a>
+                    </div>
+                    <p style="margin-top: 10px;">Email: info@iskconahillyanagar.com</p>
+                    
+                    <div style="margin-top: 20px;">
+                        <h4 style="font-size: 0.9rem; margin-bottom: 10px;">Newsletter</h4>
+                        <form onsubmit="handleSubscriberSubmit(event)" style="display: flex; gap: 5px;">
+                            <input type="email" placeholder="Your Email" required style="padding: 8px; border-radius: 4px; border: none; width: 100%;">
+                            <button type="submit" class="btn" style="padding: 8px 12px; font-size: 0.8rem;">Join</button>
+                        </form>
+                    </div>
+
+                    <p style="margin-top: 15px; font-size: 0.8rem;"><a href="admin.html" style="color: #999; text-decoration: none;">Admin Login</a></p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2024 ISKCON Ahillyanagar. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="modal-overlay" onclick="closeLightbox()">
+        <span class="close-modal" style="position: absolute; top: 20px; right: 30px; color: white; font-size: 3rem;">&times;</span>
+        <img id="lightbox-img" src="" style="max-height: 90vh; max-width: 90vw; margin: auto; display: block; position: relative; top: 50%; transform: translateY(-50%); border-radius: 10px; box-shadow: 0 0 50px rgba(0,0,0,0.5);">
+    </div>
+
+    <script src="js/database.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

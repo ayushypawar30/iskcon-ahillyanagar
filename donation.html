@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate | ISKCON Ahillyanagar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo"><i class="fas fa-om"></i> ISKCON Ahillyanagar</a>
+            <div class="mobile-menu-btn"><i class="fas fa-bars"></i></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="events.html">Events</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="store.html">Store</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="donation.html" class="active btn">Donate</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="hero" style="height: 40vh; background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('images/temple_hall.png');">
+        <div class="container hero-content">
+            <h1>Donate</h1>
+            <p>Support the Temple and Community</p>
+        </div>
+    </header>
+
+    <section class="container" style="padding: 60px 20px;">
+        <div class="timings-grid">
+            <div class="timing-card">
+                <h3>Temple Construction</h3>
+                <p>Help us build a magnificent home for the Lord.</p>
+                <button class="btn" style="margin-top: 10px;" onclick="openModal('modal-donation-construction')">Donate</button>
+            </div>
+            <div class="timing-card">
+                <h3>Food for Life</h3>
+                <p>Sponsor meals for the needy.</p>
+                <button class="btn" style="margin-top: 10px;" onclick="openModal('modal-donation-ffl')">Donate</button>
+            </div>
+            <div class="timing-card">
+                <h3>Goshala Maintenance</h3>
+                <p>Support the cows.</p>
+                <button class="btn" style="margin-top: 10px;" onclick="openModal('modal-donation-goshala')">Donate</button>
+            </div>
+            <div class="timing-card">
+                <h3>General Donation</h3>
+                <p>For daily temple maintenance.</p>
+                <button class="btn" style="margin-top: 10px;" onclick="openModal('modal-donation-general')">Donate</button>
+            </div>
+        </div>
+
+        <div style="margin-top: 60px; text-align: center;">
+            <h3>Scan to Donate (UPI)</h3>
+            <div style="width: 200px; height: 200px; background: #eee; margin: 20px auto; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-qrcode" style="font-size: 100px; color: #333;"></i>
+            </div>
+            <p>ISKCON Ahillyanagar<br>UPI ID: iskcon@upi</p>
+        </div>
+    </section>
+
+    <!-- Modals -->
+    <div id="modal-overlay" class="modal-overlay"></div>
+
+    <!-- Generic Donation Modal Structure (Reused for all) -->
+    <div id="modal-donation-construction" class="modal">
+        <div class="modal-header">
+            <h3>Donate for Temple Construction</h3>
+            <button class="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form onsubmit="handleFormSubmit(event, 'Temple Construction Donation')">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" required>
+                </div>
+                <div class="form-group">
+                    <label>Amount (₹)</label>
+                    <input type="number" min="100" required>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Donate</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-donation-ffl" class="modal">
+        <div class="modal-header">
+            <h3>Donate for Food for Life</h3>
+            <button class="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form onsubmit="handleFormSubmit(event, 'Food for Life Donation')">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" required>
+                </div>
+                <div class="form-group">
+                    <label>Amount (₹)</label>
+                    <input type="number" min="100" required>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Donate</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-donation-goshala" class="modal">
+        <div class="modal-header">
+            <h3>Donate for Goshala</h3>
+            <button class="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form onsubmit="handleFormSubmit(event, 'Goshala Donation')">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" required>
+                </div>
+                <div class="form-group">
+                    <label>Amount (₹)</label>
+                    <input type="number" min="100" required>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Donate</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-donation-general" class="modal">
+        <div class="modal-header">
+            <h3>General Donation</h3>
+            <button class="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form onsubmit="handleFormSubmit(event, 'General Donation')">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" required>
+                </div>
+                <div class="form-group">
+                    <label>Amount (₹)</label>
+                    <input type="number" min="100" required>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Donate</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>ISKCON Ahillyanagar</h3>
+                    <p>International Society for Krishna Consciousness</p>
+                </div>
+                <div class="footer-col">
+                    <h3>Connect</h3>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/iskconahilyanagar" target="_blank"><i class="fab fa-facebook"></i></a>
+                        <a href="https://www.instagram.com/iskconahilyanagar" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@ISKCONAhilyanagar" target="_blank"><i class="fab fa-youtube"></i></a>
+                    </div>
+                    <p style="margin-top: 10px;">Email: info@iskconahillyanagar.com</p>
+                </div>
+            </div>
+            <div class="copyright"><p>&copy; 2024 ISKCON Ahillyanagar. All rights reserved.</p></div>
+        </div>
+    </footer>
+
+    <script src="js/database.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
