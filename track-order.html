@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Order | ISKCON Ahilyanagar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .track-container {
+            max-width: 600px;
+            margin: 60px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            text-align: center;
+        }
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+        .search-box input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        .status-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-top: 40px;
+        }
+        .status-steps::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #e2e8f0;
+            z-index: 0;
+        }
+        .step {
+            position: relative;
+            z-index: 1;
+            background: white;
+            padding: 0 10px;
+        }
+        .step-icon {
+            width: 30px;
+            height: 30px;
+            background: #e2e8f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            color: #64748b;
+            transition: all 0.3s;
+        }
+        .step.active .step-icon {
+            background: var(--primary-color);
+            color: white;
+        }
+        .step-label {
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+        .step.active .step-label {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        #order-details { display: none; text-align: left; margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo"><i class="fas fa-om"></i> ISKCON Ahilyanagar</a>
+            <ul class="nav-links">
+                <li><a href="store.html">Store</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="track-container">
+            <h2 class="section-title">Track Your Order</h2>
+            <div class="search-box">
+                <input type="text" id="order-id-input" placeholder="Enter Order ID (e.g., ORD-173...)">
+                <button class="btn" onclick="trackOrder()">Track</button>
+            </div>
+
+            <div id="loading" style="display: none; color: #64748b;">Searching...</div>
+            <div id="error-msg" style="display: none; color: #ef4444;">Order not found. Please check the ID.</div>
+
+            <div id="result-area" style="display: none;">
+                <div class="status-steps">
+                    <div class="step" id="step-pending">
+                        <div class="step-icon"><i class="fas fa-clipboard-check"></i></div>
+                        <div class="step-label">Order Placed</div>
+                    </div>
+                    <div class="step" id="step-shipped">
+                        <div class="step-icon"><i class="fas fa-shipping-fast"></i></div>
+                        <div class="step-label">Shipped</div>
+                    </div>
+                    <div class="step" id="step-delivered">
+                        <div class="step-icon"><i class="fas fa-home"></i></div>
+                        <div class="step-label">Delivered</div>
+                    </div>
+                </div>
+
+                <div id="order-details">
+                    <h3 style="margin-bottom: 15px;">Order Details</h3>
+                    <p><strong>Order ID:</strong> <span id="display-id"></span></p>
+                    <p><strong>Date:</strong> <span id="display-date"></span></p>
+                    <p><strong>Items:</strong> <span id="display-items"></span></p>
+                    <p><strong>Total:</strong> <span id="display-total"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function trackOrder() {
+            const orderId = document.getElementById('order-id-input').value.trim();
+            if (!orderId) return;
+
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('error-msg').style.display = 'none';
+            document.getElementById('result-area').style.display = 'none';
+
+            try {
+                const response = await fetch(`/api/orders/${orderId}`);
+                if (!response.ok) throw new Error('Not found');
+                
+                const order = await response.json();
+                showResult(order);
+            } catch (err) {
+                document.getElementById('error-msg').style.display = 'block';
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+
+        function showResult(order) {
+            document.getElementById('result-area').style.display = 'block';
+            document.getElementById('display-id').textContent = order.order_id;
+            document.getElementById('display-date').textContent = order.date;
+            document.getElementById('display-total').textContent = '₹' + order.total_amount;
+
+            try {
+                const items = JSON.parse(order.items);
+                document.getElementById('display-items').textContent = items.map(i => `${i.name} (x${i.quantity})`).join(', ');
+            } catch (e) {
+                document.getElementById('display-items').textContent = 'Items info unavailable';
+            }
+
+            // Update Steps
+            const status = order.status.toLowerCase();
+            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById('step-pending').classList.add('active');
+            if (status === 'shipped' || status === 'delivered') {
+                document.getElementById('step-shipped').classList.add('active');
+            }
+            if (status === 'delivered') {
+                document.getElementById('step-delivered').classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>

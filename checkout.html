@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | ISKCON Ahilyanagar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .checkout-container {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 40px;
+            padding: 40px 0;
+        }
+        .form-section, .summary-section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+        }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #1e293b; }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-family: inherit;
+        }
+        .payment-option {
+            border: 1px solid #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s;
+        }
+        .payment-option:hover { background: #f8fafc; }
+        .payment-option.selected {
+            border-color: var(--primary-color);
+            background: #f0fdf4;
+        }
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        @media (max-width: 768px) {
+            .checkout-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo"><i class="fas fa-om"></i> ISKCON Ahilyanagar</a>
+            <ul class="nav-links">
+                <li><a href="store.html">Back to Store</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container checkout-container">
+        <!-- Shipping Details -->
+        <div class="form-section">
+            <h2 style="margin-bottom: 20px;">Shipping Details</h2>
+            <form id="checkout-form" onsubmit="handleCheckout(event)">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="phone" required>
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <textarea id="address" rows="3" required></textarea>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="form-group">
+                        <label>City</label>
+                        <input type="text" id="city" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Zip Code</label>
+                        <input type="text" id="zip" required>
+                    </div>
+                </div>
+
+                <h2 style="margin: 30px 0 20px;">Payment Method</h2>
+                <div class="payment-option selected" onclick="selectPayment('cod')">
+                    <i class="fas fa-money-bill-wave" style="color: var(--primary-color);"></i>
+                    <div>
+                        <strong>Cash on Delivery (COD)</strong>
+                        <div style="font-size: 0.85rem; color: #64748b;">Pay when you receive the items</div>
+                    </div>
+                </div>
+                <div class="payment-option" onclick="selectPayment('online')">
+                    <i class="fas fa-credit-card" style="color: var(--primary-color);"></i>
+                    <div>
+                        <strong>Online Payment</strong>
+                        <div style="font-size: 0.85rem; color: #64748b;">UPI, Card, Net Banking</div>
+                    </div>
+                </div>
+                <input type="hidden" id="payment-mode" value="cod">
+
+                <button type="submit" class="btn" style="width: 100%; margin-top: 20px;">Place Order</button>
+            </form>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="summary-section">
+            <h2 style="margin-bottom: 20px;">Order Summary</h2>
+            <div id="order-items">
+                <!-- Items injected here -->
+            </div>
+            <div style="margin-top: 20px; padding-top: 20px; border-top: 2px solid #eee;">
+                <div class="summary-item" style="border: none; font-size: 1.2rem; font-weight: bold;">
+                    <span>Total</span>
+                    <span id="order-total">₹0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/database.js"></script>
+    <script>
+        // Load Cart
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+        if (cart.length === 0) {
+            alert('Your cart is empty!');
+            window.location.href = 'store.html';
+        }
+
+        // Auto-fill for logged-in users
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user) {
+            document.getElementById('name').value = user.name || '';
+            document.getElementById('email').value = user.email || '';
+            document.getElementById('phone').value = user.phone || '';
+        }
+
+        // Render Summary
+        document.getElementById('order-items').innerHTML = cart.map(item => `
+            <div class="summary-item">
+                <div>
+                    <div style="font-weight: 600;">${item.name}</div>
+                    <div style="font-size: 0.9rem; color: #64748b;">Qty: ${item.quantity}</div>
+                </div>
+                <div>₹${item.price * item.quantity}</div>
+            </div>
+        `).join('');
+        document.getElementById('order-total').textContent = '₹' + total;
+
+        // Payment Selection
+        function selectPayment(mode) {
+            document.querySelectorAll('.payment-option').forEach(el => el.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+            document.getElementById('payment-mode').value = mode;
+        }
+
+        // Handle Checkout
+        async function handleCheckout(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            btn.disabled = true;
+            btn.innerText = 'Processing...';
+
+            const orderData = {
+                orderId: 'ORD-' + Date.now(),
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                address: document.getElementById('address').value,
+                city: document.getElementById('city').value,
+                zip: document.getElementById('zip').value,
+                items: JSON.stringify(cart),
+                total: total,
+                paymentMode: document.getElementById('payment-mode').value,
+                status: 'Pending'
+            };
+
+            if (orderData.paymentMode === 'online') {
+                // Redirect to Payment Page
+                // We pass the total amount and order ref. 
+                // In a real app, we'd save the order first as 'Pending Payment'
+                // For this demo, we'll redirect to payment.html
+                window.location.href = `payment.html?amount=${total}&name=${encodeURIComponent(orderData.name)}&email=${encodeURIComponent(orderData.email)}&type=StoreOrder`;
+            } else {
+                // COD - Save directly
+                try {
+                    const response = await fetch('/api/orders', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(orderData)
+                    });
+                    const result = await response.json();
+                    
+                    if (result.status === 'success') {
+                        localStorage.removeItem('cart'); // Clear cart
+                        alert('Order Placed Successfully! Order ID: ' + orderData.orderId);
+                        window.location.href = 'index.html';
+                    } else {
+                        alert('Failed to place order. Please try again.');
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert('Error placing order.');
+                } finally {
+                    btn.disabled = false;
+                    btn.innerText = 'Place Order';
+                }
+            }
+        }
+    </script>
+</body>
+</html>

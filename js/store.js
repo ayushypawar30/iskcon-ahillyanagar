@@ -1,74 +1,115 @@
 const products = [
     {
         id: 1,
-        name: "Bhagavad Gita As It Is",
+        name: "Bhagavad-Gita (English)",
         category: "Books",
-        price: 250,
-        image: "images/prabhupada.png" // Local placeholder
+        originalPrice: 350,
+        price: 240,
+        image: "images/gita_english.png"
     },
     {
         id: 2,
-        name: "Srimad Bhagavatam Set (18 Vols)",
+        name: "Bhagavad-Gita (Hindi)",
         category: "Books",
-        price: 7500,
-        image: "images/prabhupada.png" // Local placeholder
+        originalPrice: 270,
+        price: 200,
+        image: "images/gita_hindi.jpg"
     },
     {
         id: 3,
-        name: "Krsna: The Supreme Personality of Godhead",
+        name: "Bhagavad-Gita (Marathi)",
         category: "Books",
-        price: 450,
-        image: "images/prabhupada.png" // Local placeholder
-    },
-    {
-        id: 4,
-        name: "The Nectar of Devotion",
-        category: "Books",
-        price: 300,
-        image: "images/prabhupada.png" // Local placeholder
+        originalPrice: 240,
+        price: 180,
+        image: "images/gita_marathi.jpg"
     },
     {
         id: 5,
         name: "Tulsi Mala (108 Beads)",
         category: "Devotional",
         price: 150,
-        image: "images/puja.png" // Local placeholder
+        image: "images/puja.png"
     },
     {
         id: 6,
         name: "Saffron Japa Bag",
         category: "Devotional",
         price: 100,
-        image: "images/puja.png" // Local placeholder
+        image: "images/puja.png"
     },
     {
         id: 7,
         name: "Cotton Dhoti Kurta Set",
         category: "Clothing",
         price: 800,
-        image: "images/temple_hall.png" // Local placeholder
+        image: "images/temple_hall.png"
     },
     {
         id: 8,
         name: "Premium Incense Sticks (Sandalwood)",
         category: "Devotional",
         price: 120,
-        image: "images/puja.png" // Local placeholder
+        image: "images/puja.png"
+    },
+    {
+        id: 9,
+        name: "Radha Krishna Idol (Brass)",
+        category: "Gifts",
+        price: 1500,
+        image: "images/radha_krishna_real.png"
+    },
+    {
+        id: 10,
+        name: "Spiritual Gift Hamper",
+        category: "Gifts",
+        price: 2100,
+        image: "images/food_dist.png"
+    },
+    {
+        id: 11,
+        name: "Wooden Carved Altar",
+        category: "Gifts",
+        price: 3500,
+        image: "images/temple_hall.png"
     }
 ];
 
-function renderProducts() {
+function renderProducts(category = 'All') {
     const grid = document.getElementById('product-grid');
     if (!grid) return;
 
-    grid.innerHTML = products.map(product => `
+    const filtered = category === 'All'
+        ? products
+        : products.filter(p => p.category === category);
+
+    if (filtered.length === 0) {
+        grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">No products found in this category.</p>';
+        return;
+    }
+
+    grid.innerHTML = filtered.map(product => {
+        const priceDisplay = product.originalPrice
+            ? `<span style="text-decoration: line-through; color: #94a3b8; margin-right: 8px;">₹${product.originalPrice}</span> <span style="color: var(--primary-color); font-weight: bold;">₹${product.price}</span>`
+            : `<span style="color: var(--primary-color); font-weight: bold;">₹${product.price}</span>`;
+
+        return `
         <div class="timing-card" style="text-align: center;">
-            <img src="${product.image}" alt="${product.name}" onerror="this.onerror=null; this.src='images/placeholder.png';" style="width: 100%; height: 200px; object-fit: cover; border-radius: 5px; margin-bottom: 10px;">
+            <img src="${product.image}" alt="${product.name}" onerror="this.onerror=null; this.src='images/placeholder.png';" style="width: 100%; height: 200px; object-fit: contain; border-radius: 5px; margin-bottom: 10px;">
             <h3>${product.name}</h3>
-            <p style="color: var(--primary-color); font-weight: bold;">₹${product.price}</p>
+            <p>${priceDisplay}</p>
             <button class="btn" onclick="addToCart(${product.id})" style="margin-top: 10px;">Add to Cart</button>
         </div>
-    `).join('');
+    `}).join('');
+}
+
+function filterProducts(category) {
+    // Update active button
+    document.querySelectorAll('.category-filters .btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.textContent === category) btn.classList.add('active');
+    });
+
+    renderProducts(category);
 }
 
 function addToCart(productId) {

@@ -42,6 +42,72 @@ def init_db():
             date TEXT
         )
     ''')
+
+    # Orders Table (New)
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS orders (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            order_id TEXT,
+            customer_name TEXT,
+            email TEXT,
+            phone TEXT,
+            address TEXT,
+            city TEXT,
+            zip TEXT,
+            items TEXT,
+            total_amount REAL,
+            payment_mode TEXT,
+            status TEXT,
+            date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+    
+    # Users Table
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            email TEXT UNIQUE,
+            password TEXT,
+            phone TEXT,
+            date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+    
+    # Volunteers Table
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS volunteers (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            phone TEXT,
+            service TEXT,
+            date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+
+    # Bookings Table (Pooja/Seva)
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS bookings (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            type TEXT,
+            date TEXT,
+            status TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+
+    # RSVPs Table
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS rsvps (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            event_name TEXT,
+            name TEXT,
+            phone TEXT,
+            guests INTEGER,
+            date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
     
     conn.commit()
     conn.close()
@@ -106,11 +172,146 @@ def get_subscribers():
     conn.close()
     return [dict(row) for row in rows]
 
+def save_order(data):
+    conn = sqlite3.connect(DB_NAME)
+    c = conn.cursor()
+    c.execute('''
+        INSERT INTO orders (order_id, customer_name, email, phone, address, city, zip, items, total_amount, payment_mode, status)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ''', (
+        data.get('orderId'),
+        data.get('name'),
+        data.get('email'),
+        data.get('phone'),
+        data.get('address'),
+        data.get('city'),
+        data.get('zip'),
+        data.get('items'),
+        data.get('total'),
+        data.get('paymentMode'),
+        data.get('status', 'Pending')
+    ))
+    conn.commit()
+    last_id = c.lastrowid
+    conn.close()
+    return {'status': 'success', 'id': last_id}
+
+def get_orders():
+    conn = sqlite3.connect(DB_NAME)
+    conn.row_factory = sqlite3.Row
+    c = conn.cursor()
+    c.execute('SELECT * FROM orders ORDER BY date DESC')
+    rows = c.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
+
+def get_order_by_id(order_id):
+    conn = sqlite3.connect(DB_NAME)
+    conn.row_factory = sqlite3.Row
+    c = conn.cursor()
+    c.execute('SELECT * FROM orders WHERE order_id = ?', (order_id,))
+    row = c.fetchone()
+    conn.close()
+    return dict(row) if row else None
+
+def update_order_status(order_id, status):
+    conn = sqlite3.connect(DB_NAME)
+    c = conn.cursor()
+    c.execute('UPDATE orders SET status = ? WHERE order_id = ?', (status, order_id))
+    conn.commit()
+    updated = c.rowcount > 0
+    conn.close()
+    return updated
+
+def create_user(data):
+    conn = sqlite3.connect(DB_NAME)
+    c = conn.cursor()
+    try:
+        c.execute('INSERT INTO users (name, email, password, phone) VALUES (?, ?, ?, ?)', 
+                 (data.get('name'), data.get('email'), data.get('password'), data.get('phone')))
+        conn.commit()
+        return True
+    except sqlite3.IntegrityError:
+        return False
+    finally:
+        conn.close()
+
+def verify_user(email, password):
+    conn = sqlite3.connect(DB_NAME)
+    conn.row_factory = sqlite3.Row
+    c = conn.cursor()
+    c.execute('SELECT * FROM users WHERE email = ? AND password = ?', (email, password))
+    user = c.fetchone()
+    conn.close()
+    return dict(user) if user else None
+
+def get_orders_by_email(email):
+    conn = sqlite3.connect(DB_NAME)
+    conn.row_factory = sqlite3.Row
+    c = conn.cursor()
+    c.execute('SELECT * FROM orders WHERE email = ? ORDER BY date DESC', (email,))
+    rows = c.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
+
+# --- New Functions ---
+
+def save_volunteer(data):
+    conn = sqlite3.connect(DB_NAME)
+    c = conn.cursor()
+    c.execute('INSERT INTO volunteers (name, phone, service) VALUES (?, ?, ?)',
+              (data.get('name'), data.get('phone'), data.get('service')))
+    conn.commit()
+    conn.close()
+
+def get_volunteers():
+    conn = sqlite3.connect(DB_NAME)
+    conn.row_factory = sqlite3.Row
+    c = conn.cursor()
+    c.execute('SELECT * FROM volunteers ORDER BY id DESC')
+    rows = c.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
+
+def save_booking(data):
+    conn = sqlite3.connect(DB_NAME)
+    c = conn.cursor()
+    c.execute('INSERT INTO bookings (name, type, date, status) VALUES (?, ?, ?, ?)',
+              (data.get('name'), data.get('type'), data.get('date'), 'Confirmed'))
+    conn.commit()
+    conn.close()
+
+def get_bookings():
+    conn = sqlite3.connect(DB_NAME)
+    conn.row_factory = sqlite3.Row
+    c = conn.cursor()
+    c.execute('SELECT * FROM bookings ORDER BY id DESC')
+    rows = c.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
+
+def save_rsvp(data):
+    conn = sqlite3.connect(DB_NAME)
+    c = conn.cursor()
+    c.execute('INSERT INTO rsvps (event_name, name, phone, guests) VALUES (?, ?, ?, ?)',
+              (data.get('eventName'), data.get('name'), data.get('phone'), data.get('guests')))
+    conn.commit()
+    conn.close()
+
+def get_rsvps():
+    conn = sqlite3.connect(DB_NAME)
+    conn.row_factory = sqlite3.Row
+    c = conn.cursor()
+    c.execute('SELECT * FROM rsvps ORDER BY id DESC')
+    rows = c.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
+
 def clear_table(table_name):
     conn = sqlite3.connect(DB_NAME)
     c = conn.cursor()
     # Whitelist tables for safety
-    if table_name in ['donations', 'contacts', 'subscribers']:
+    if table_name in ['donations', 'contacts', 'subscribers', 'orders', 'users', 'volunteers', 'bookings', 'rsvps']:
         c.execute(f'DELETE FROM {table_name}')
         conn.commit()
     conn.close()

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard | ISKCON Ahillyanagar</title>
+    <title>Admin Dashboard | ISKCON Ahilyanagar</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -56,6 +56,7 @@
             <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
                 <div class="logo"><i class="fas fa-om"></i> ISKCON Admin</div>
                 <div style="display: flex; gap: 15px;">
+                    <button onclick="document.getElementById('orders-section').scrollIntoView({behavior: 'smooth'})" class="btn btn-secondary" style="border-color: #3b82f6; color: #3b82f6; font-size: 0.9rem; padding: 8px 16px;">View Orders</button>
                     <button onclick="exportToCSV()" class="btn btn-secondary" style="border-color: #16a34a; color: #16a34a; font-size: 0.9rem; padding: 8px 16px;"><i class="fas fa-file-excel"></i> Export to Excel</button>
                     <button onclick="generateTestData()" class="btn btn-secondary" style="border-color: #cbd5e1; color: #475569; font-size: 0.9rem; padding: 8px 16px;">Generate Test Data</button>
                     <button onclick="logout()" class="btn btn-secondary" style="border-color: #cbd5e1; color: #475569; font-size: 0.9rem; padding: 8px 16px;">Logout</button>
@@ -161,6 +162,30 @@
                 </div>
             </div>
 
+            <!-- Orders Table -->
+            <div class="dashboard-section" id="orders-section">
+                <div class="section-header">
+                    <h2>Store Orders</h2>
+                    <button onclick="window.db.clearOrders(); loadData();" style="color: #ef4444; background: none; border: none; cursor: pointer; font-size: 0.85rem;">Clear Orders</button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table id="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Payment</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
             <!-- Subscribers Table -->
             <div class="dashboard-section">
                 <div class="section-header">
@@ -218,8 +243,7 @@
             try {
                 // Donations
                 const donations = await window.db.getDonations();
-                // donations is an array, reverse it for display
-                donations.reverse();
+                // API returns DESC, so no need to reverse
                 
                 const totalAmount = donations.reduce((sum, d) => sum + parseFloat(d.amount || 0), 0);
                 document.getElementById('total-donations').textContent = '₹' + totalAmount.toLocaleString();
@@ -249,7 +273,7 @@
 
                 // Contacts
                 const contacts = await window.db.getContacts();
-                contacts.reverse();
+                // API returns DESC
                 document.getElementById('total-messages').textContent = contacts.length;
                 
                 const contactBody = document.querySelector('#contact-table tbody');
@@ -264,7 +288,7 @@
 
                 // Subscribers
                 const subs = await window.db.getSubscribers();
-                subs.reverse();
+                // API returns DESC
                 document.getElementById('total-subscribers').textContent = subs.length;
                 
                 const subBody = document.querySelector('#sub-table tbody');
@@ -275,10 +299,64 @@
                     </tr>
                 `).join('') || '<tr><td colspan="2" style="text-align:center; color: #94a3b8; padding: 30px;">No subscribers yet</td></tr>';
 
+                // Orders
+                const orders = await window.db.getOrders();
+                const ordersBody = document.querySelector('#orders-table tbody');
+                
+                ordersBody.innerHTML = orders.map(o => {
+                    let itemsSummary = 'No items';
+                    try {
+                        const items = JSON.parse(o.items || '[]');
+                        itemsSummary = items.map(i => `${i.name} (x${i.quantity})`).join(', ');
+                    } catch (e) { itemsSummary = 'Error parsing items'; }
+
+                    return `
+                    <tr>
+                        <td>${o.date}</td>
+                        <td><span style="font-family: monospace; font-weight: bold;">${o.order_id}</span></td>
+                        <td>
+                            <div style="font-weight: 600; color: #1e293b;">${o.customer_name}</div>
+                            <div style="font-size: 0.8rem; color: #64748b;">${o.city}</div>
+                        </td>
+                        <td style="max-width: 250px; font-size: 0.9rem;">${itemsSummary}</td>
+                        <td><div style="font-weight: 600; color: var(--primary-color);">₹${o.total_amount}</div></td>
+                        <td><span class="badge ${o.payment_mode === 'cod' ? 'badge-pending' : 'badge-success'}">${o.payment_mode.toUpperCase()}</span></td>
+                        <td>
+                            <select onchange="updateStatus('${o.order_id}', this.value)" style="padding: 4px; border-radius: 4px; border: 1px solid #cbd5e1; font-size: 0.85rem;">
+                                <option value="Pending" ${o.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                                <option value="Shipped" ${o.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
+                                <option value="Delivered" ${o.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                            </select>
+                        </td>
+                    </tr>
+                    `;
+                }).join('') || '<tr><td colspan="7" style="text-align:center; color: #94a3b8; padding: 30px;">No orders placed yet</td></tr>';
+
+
                 document.getElementById('debug-output').textContent = 'Data loaded successfully from Python Server.';
             } catch (err) {
                 console.error(err);
                 document.getElementById('debug-output').textContent = 'Error loading data: ' + err.message;
+            }
+        }
+
+        async function updateStatus(orderId, newStatus) {
+            try {
+                const response = await fetch(`/api/orders/${orderId}/status`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: newStatus })
+                });
+                
+                if (response.ok) {
+                    // alert('Status updated!'); // Optional: too many alerts can be annoying
+                    // Reload to reflect changes if needed, or just let it stay
+                } else {
+                    alert('Failed to update status');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Error updating status');
             }
         }
 

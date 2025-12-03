@@ -80,6 +80,91 @@ const db = {
 
     clearSubscribers: async function () {
         await fetch('/api/subscribers', { method: 'DELETE' });
+    },
+
+    getOrders: async function () {
+        try {
+            const response = await fetch('/api/orders');
+            return await response.json();
+        } catch (error) {
+            console.error('Error fetching orders:', error);
+            return [];
+        }
+    },
+
+    clearOrders: async function () {
+        await fetch('/api/orders', { method: 'DELETE' });
+    },
+
+    // --- New Methods ---
+
+    saveVolunteer: async function (data) {
+        try {
+            const response = await fetch('/api/volunteers', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            return await response.json();
+        } catch (error) {
+            console.error('Error saving volunteer:', error);
+        }
+    },
+
+    getVolunteers: async function () {
+        try {
+            const response = await fetch('/api/volunteers');
+            return await response.json();
+        } catch (error) {
+            console.error('Error fetching volunteers:', error);
+            return [];
+        }
+    },
+
+    saveBooking: async function (data) {
+        try {
+            const response = await fetch('/api/bookings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            return await response.json();
+        } catch (error) {
+            console.error('Error saving booking:', error);
+        }
+    },
+
+    getBookings: async function () {
+        try {
+            const response = await fetch('/api/bookings');
+            return await response.json();
+        } catch (error) {
+            console.error('Error fetching bookings:', error);
+            return [];
+        }
+    },
+
+    saveRSVP: async function (data) {
+        try {
+            const response = await fetch('/api/rsvps', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            return await response.json();
+        } catch (error) {
+            console.error('Error saving RSVP:', error);
+        }
+    },
+
+    getRSVPs: async function () {
+        try {
+            const response = await fetch('/api/rsvps');
+            return await response.json();
+        } catch (error) {
+            console.error('Error fetching RSVPs:', error);
+            return [];
+        }
     }
 };
 

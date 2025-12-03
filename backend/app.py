@@ -19,6 +19,58 @@ def serve_static(path):
 
 # --- API Endpoints ---
 
+@app.route('/api/register', methods=['POST'])
+def register():
+    data = request.json
+    if database.create_user(data):
+        return jsonify({'status': 'success'})
+    else:
+        return jsonify({'error': 'Email already exists'}), 400
+
+@app.route('/api/login', methods=['POST'])
+def login():
+    data = request.json
+    user = database.verify_user(data.get('email'), data.get('password'))
+    if user:
+        return jsonify({'status': 'success', 'user': user})
+    else:
+        return jsonify({'error': 'Invalid credentials'}), 401
+
+@app.route('/api/my-orders', methods=['GET'])
+def my_orders():
+    email = request.args.get('email')
+    if not email:
+        return jsonify({'error': 'Email required'}), 400
+    orders = database.get_orders_by_email(email)
+    return jsonify(orders)
+
+@app.route('/api/orders/<order_id>', methods=['GET'])
+def get_order(order_id):
+    order = database.get_order_by_id(order_id)
+    if order:
+        return jsonify(order)
+    else:
+        return jsonify({'error': 'Order not found'}), 404
+
+@app.route('/api/orders/<order_id>/status', methods=['PUT'])
+def update_order_status(order_id):
+    data = request.json
+    status = data.get('status')
+    if database.update_order_status(order_id, status):
+        return jsonify({'status': 'success'})
+    else:
+        return jsonify({'error': 'Failed to update'}), 400
+
+@app.route('/api/orders', methods=['GET', 'POST'])
+def handle_orders():
+    if request.method == 'POST':
+        data = request.json
+        result = database.save_order(data)
+        return jsonify(result)
+    else:
+        orders = database.get_orders()
+        return jsonify(orders)
+
 @app.route('/api/donations', methods=['GET', 'POST', 'DELETE'])
 def handle_donations():
     if request.method == 'POST':
@@ -57,6 +109,33 @@ def handle_subscribers():
     elif request.method == 'DELETE':
         database.clear_table('subscribers')
         return jsonify({'status': 'success', 'message': 'Subscribers cleared'})
+
+@app.route('/api/volunteers', methods=['GET', 'POST'])
+def handle_volunteers():
+    if request.method == 'POST':
+        data = request.json
+        database.save_volunteer(data)
+        return jsonify({'status': 'success', 'message': 'Volunteer registered'})
+    else:
+        return jsonify(database.get_volunteers())
+
+@app.route('/api/bookings', methods=['GET', 'POST'])
+def handle_bookings():
+    if request.method == 'POST':
+        data = request.json
+        database.save_booking(data)
+        return jsonify({'status': 'success', 'message': 'Booking confirmed'})
+    else:
+        return jsonify(database.get_bookings())
+
+@app.route('/api/rsvps', methods=['GET', 'POST'])
+def handle_rsvps():
+    if request.method == 'POST':
+        data = request.json
+        database.save_rsvp(data)
+        return jsonify({'status': 'success', 'message': 'RSVP confirmed'})
+    else:
+        return jsonify(database.get_rsvps())
 
 import os
 

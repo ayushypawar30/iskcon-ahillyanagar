@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure Payment | ISKCON Ahillyanagar</title>
+    <title>Secure Payment | ISKCON Ahilyanagar</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -200,7 +200,7 @@
         <div class="main-content">
             <div class="header">
                 <div class="merchant-info">
-                    <h2>ISKCON Ahillyanagar</h2>
+                    <h2>ISKCON Ahilyanagar</h2>
                     <p><i class="fas fa-check-circle verified-badge"></i> Verified Merchant</p>
                     <p style="font-size: 0.8rem; margin-top: 5px;">Order ID: <span id="order-id">#ISK-0000</span></p>
                 </div>
@@ -337,7 +337,7 @@
                     </div>
                     
                     <button class="pay-btn" onclick="verifyPayment()">Submit</button>
-                    <p style="margin-top: 15px; font-size: 0.8rem; color: var(--primary); cursor: pointer;">Resend OTP</p>
+                    <p style="margin-top: 15px; font-size: 0.8rem; color: var(--primary); cursor: pointer;" onclick="resendOTP()">Resend OTP</p>
                 </div>
             </div>
         </div>
@@ -382,6 +382,27 @@
                 
                 window.location.href = 'donation-success.html?name=' + encodeURIComponent(name);
             }, 2000);
+        }
+
+        // --- Resend OTP ---
+        function resendOTP() {
+            const btn = document.querySelector('p[onclick="resendOTP()"]');
+            if (btn.style.opacity === '0.5') return; // Prevent spamming
+
+            // Generate new OTP
+            currentOTP = Math.floor(1000 + Math.random() * 9000);
+            
+            // Visual feedback
+            btn.textContent = 'Sending...';
+            btn.style.opacity = '0.5';
+            btn.style.cursor = 'not-allowed';
+
+            setTimeout(() => {
+                alert(`💬 RESENT MESSAGE:\n\nYour new OTP is: ${currentOTP}`);
+                btn.textContent = 'Resend OTP';
+                btn.style.opacity = '1';
+                btn.style.cursor = 'pointer';
+            }, 1000);
         }
 
         // --- Tab Switching ---
@@ -485,7 +506,8 @@
                             donorName: name,
                             amount: amount,
                             email: email,
-                            orderId: orderId
+                            orderId: orderId,
+                            purpose: purpose
                         });
                     } else {
                         console.warn('Database not loaded');
