@@ -40,7 +40,7 @@ h1, h2, h3, h4, h5, h6 {
 a {
     text-decoration: none;
     color: inherit;
-    transition: color 0.2s ease;
+    transition: color 0.2s ease-in-out;
 }
 
 ul {
@@ -85,7 +85,7 @@ ul {
     font-size: 1rem;
     border: none;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.2s ease-in-out;
     box-shadow: var(--shadow-sm);
 }
 
@@ -221,7 +221,7 @@ ul {
     padding: 40px;
     border-radius: 24px;
     box-shadow: var(--shadow-soft);
-    transition: all 0.4s ease;
+    transition: all 0.4s ease-in-out;
     border: 1px solid rgba(0,0,0,0.03);
     position: relative;
     overflow: hidden;
@@ -247,7 +247,7 @@ ul {
 .timing-card img {
     border-radius: 16px;
     margin-bottom: 20px;
-    transition: transform 0.5s ease;
+    transition: transform 0.5s ease-in-out;
 }
 
 .timing-card:hover img {
@@ -277,7 +277,7 @@ ul {
     position: relative;
     cursor: pointer;
     scroll-snap-align: center;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease-in-out;
     box-shadow: var(--shadow-soft);
     overflow: hidden;
 }
@@ -290,7 +290,7 @@ ul {
     top: 0;
     left: 0;
     z-index: 1; /* Ensure it's above base */
-    transition: transform 0.5s ease;
+    transition: transform 0.5s ease-in-out;
 }
 
 .darshan-card:hover .darshan-img {
@@ -368,7 +368,7 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease-in-out;
     color: var(--white);
 }
 
@@ -396,7 +396,7 @@ footer {
     z-index: 2000;
     display: none;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease-in-out;
 }
 
 .modal {
@@ -490,7 +490,7 @@ footer {
 .fade-in-up {
     opacity: 0;
     transform: translateY(30px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
 }
 
 .fade-in-up.visible {

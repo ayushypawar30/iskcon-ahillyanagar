@@ -195,11 +195,121 @@
                     <p style="margin-top: 10px;">Email: info@iskconahillyanagar.com</p>
                 </div>
             </div>
-            <div class="copyright"><p>&copy; 2024 ISKCON Ahilyanagar. All rights reserved.</p></div>
+            <div class="copyright"><p>&copy; 2025 ISKCON Ahilyanagar. All rights reserved.</p></div>
         </div>
     </footer>
 
     <script src="js/database.js"></script>
     <script src="js/main.js"></script>
+
+    <script>
+        // Direct Modal Handlers for Services Page
+        function openModal(modalId) {
+            console.log('Opening modal (Inline):', modalId);
+            const modal = document.getElementById(modalId);
+            const overlay = document.getElementById('modal-overlay');
+            if (modal && overlay) {
+                modal.classList.add('active');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            } else {
+                console.error('Modal not found:', modalId);
+            }
+        }
+
+        function closeModal() {
+            document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+            const overlay = document.getElementById('modal-overlay');
+            if (overlay) overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Attach close handlers
+        document.addEventListener('DOMContentLoaded', () => {
+            const overlay = document.getElementById('modal-overlay');
+            if (overlay) overlay.addEventListener('click', closeModal);
+            
+            document.querySelectorAll('.close-modal').forEach(btn => {
+                btn.addEventListener('click', closeModal);
+            });
+        });
+
+        // Form Handlers
+        async function handleBookingSubmit(event, type) {
+            event.preventDefault();
+            const form = event.target;
+            const btn = form.querySelector('button');
+            const name = form.querySelector('input[type="text"]').value;
+            const date = form.querySelector('input[type="date"]').value;
+
+            btn.innerText = 'Processing...';
+            btn.disabled = true;
+
+            try {
+                if (window.db) {
+                    await window.db.saveBooking({ name, type, date });
+                    alert('Request Received! We will contact you for confirmation.');
+                    form.reset();
+                    closeModal();
+                } else {
+                    throw new Error('Database not loaded');
+                }
+            } catch (e) {
+                console.error(e);
+                alert('Error processing request.');
+            } finally {
+                btn.innerText = 'Book Now';
+                btn.disabled = false;
+            }
+        }
+
+        async function handleFormSubmit(event, type) {
+            event.preventDefault();
+            const form = event.target;
+            const btn = form.querySelector('button');
+            
+            // Basic validation/processing simulation
+            btn.innerText = 'Processing...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                alert(`Thank you for your interest in ${type}! We will contact you shortly.`);
+                form.reset();
+                closeModal();
+                btn.innerText = 'Donate';
+                btn.disabled = false;
+            }, 1000);
+        }
+
+        async function handleVolunteerSubmit(event, service) {
+            event.preventDefault();
+            const form = event.target;
+            const btn = form.querySelector('button');
+            const name = form.querySelector('input[type="text"]').value;
+            const phone = form.querySelector('input[type="tel"]').value;
+            const serviceType = form.querySelector('select').value;
+            const festival = form.querySelector('input[name="festival"]').value;
+
+            btn.innerText = 'Registering...';
+            btn.disabled = true;
+
+            try {
+                if (window.db) {
+                    await window.db.saveVolunteer({ name, phone, service: serviceType, festival });
+                    alert('Registration Successful! We will contact you soon.');
+                    form.reset();
+                    closeModal();
+                } else {
+                    throw new Error('Database not loaded');
+                }
+            } catch (e) {
+                console.error(e);
+                alert('Error registering volunteer.');
+            } finally {
+                btn.innerText = 'Register';
+                btn.disabled = false;
+            }
+        }
+    </script>
 </body>
 </html>
