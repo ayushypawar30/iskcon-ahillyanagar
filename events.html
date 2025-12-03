@@ -112,6 +112,9 @@
 
     </section>
 
+    <!-- Modal Overlay -->
+    <div id="modal-overlay" class="modal-overlay"></div>
+
     <!-- RSVP Modal -->
     <div id="modal-rsvp" class="modal">
         <div class="modal-header">
@@ -160,6 +163,78 @@
         </div>
     </footer>
 
+    <script src="js/database.js"></script>
     <script src="js/main.js"></script>
+    
+    <script>
+        // Direct RSVP Handler to ensure it works independent of main.js
+        function openRSVP(eventName) {
+            console.log('Opening RSVP for (Inline):', eventName);
+            const modal = document.getElementById('modal-rsvp');
+            const overlay = document.getElementById('modal-overlay');
+            const title = document.getElementById('rsvp-event-title');
+            const input = document.getElementById('rsvp-event-name');
+
+            if (modal && overlay) {
+                if(title) title.innerText = 'RSVP: ' + eventName;
+                if(input) input.value = eventName;
+                
+                modal.classList.add('active');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            } else {
+                console.error('RSVP Modal elements not found');
+                alert('Error: Could not open RSVP form. Please contact us directly.');
+            }
+        }
+
+        function closeRSVPModal() {
+            const modal = document.getElementById('modal-rsvp');
+            const overlay = document.getElementById('modal-overlay');
+            if (modal) modal.classList.remove('active');
+            if (overlay) overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Attach close handlers
+        document.addEventListener('DOMContentLoaded', () => {
+            const closeBtn = document.querySelector('#modal-rsvp .close-modal');
+            const overlay = document.getElementById('modal-overlay');
+            
+            if (closeBtn) closeBtn.addEventListener('click', closeRSVPModal);
+            if (overlay) overlay.addEventListener('click', closeRSVPModal);
+        });
+
+        async function handleRSVPSubmit(event) {
+            event.preventDefault();
+            const form = event.target;
+            const btn = form.querySelector('button[type="submit"]');
+            
+            const eventName = document.getElementById('rsvp-event-name').value;
+            const name = form.querySelector('input[type="text"]').value;
+            const phone = form.querySelector('input[type="tel"]').value;
+            const guests = form.querySelector('input[type="number"]').value;
+
+            btn.innerText = 'Confirming...';
+            btn.disabled = true;
+
+            try {
+                if (window.db) {
+                    await window.db.saveRSVP({ eventName, name, phone, guests });
+                    alert('RSVP Confirmed! See you there.');
+                    form.reset();
+                    closeRSVPModal();
+                } else {
+                    throw new Error('Database not loaded');
+                }
+            } catch (error) {
+                console.error('RSVP Error:', error);
+                alert('There was an error saving your RSVP. Please try again.');
+            } finally {
+                btn.innerText = 'Confirm RSVP';
+                btn.disabled = false;
+            }
+        }
+    </script>
 </body>
 </html>

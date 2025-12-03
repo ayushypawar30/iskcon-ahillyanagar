@@ -81,9 +81,16 @@ def init_db():
             name TEXT,
             phone TEXT,
             service TEXT,
+            festival TEXT,
             date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
+    
+    # Attempt to add festival column if it doesn't exist (migration)
+    try:
+        c.execute('ALTER TABLE volunteers ADD COLUMN festival TEXT')
+    except sqlite3.OperationalError:
+        pass # Column likely already exists
 
     # Bookings Table (Pooja/Seva)
     c.execute('''
@@ -245,6 +252,15 @@ def verify_user(email, password):
     conn.close()
     return dict(user) if user else None
 
+def get_users():
+    conn = sqlite3.connect(DB_NAME)
+    conn.row_factory = sqlite3.Row
+    c = conn.cursor()
+    c.execute('SELECT * FROM users ORDER BY id DESC')
+    rows = c.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
+
 def get_orders_by_email(email):
     conn = sqlite3.connect(DB_NAME)
     conn.row_factory = sqlite3.Row
@@ -259,8 +275,8 @@ def get_orders_by_email(email):
 def save_volunteer(data):
     conn = sqlite3.connect(DB_NAME)
     c = conn.cursor()
-    c.execute('INSERT INTO volunteers (name, phone, service) VALUES (?, ?, ?)',
-              (data.get('name'), data.get('phone'), data.get('service')))
+    c.execute('INSERT INTO volunteers (name, phone, service, festival) VALUES (?, ?, ?, ?)',
+              (data.get('name'), data.get('phone'), data.get('service'), data.get('festival')))
     conn.commit()
     conn.close()
 

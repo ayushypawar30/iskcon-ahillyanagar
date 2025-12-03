@@ -5,34 +5,178 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard | ISKCON Ahilyanagar</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background-color: #f8fafc; }
-        .admin-navbar { background: white; border-bottom: 1px solid #e2e8f0; padding: 1rem 0; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
-        .admin-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        :root {
+            --primary-color: #f97316;
+            --secondary-color: #1e293b;
+            --bg-color: #f1f5f9;
+            --sidebar-width: 260px;
+        }
         
-        .dashboard-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin-bottom: 40px; }
-        .stat-card { background: white; padding: 24px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
-        .stat-card h3 { font-size: 0.9rem; color: #64748b; margin-bottom: 8px; font-family: 'Inter', sans-serif; text-transform: uppercase; letter-spacing: 0.05em; }
-        .stat-card .value { font-size: 2rem; font-weight: 700; color: var(--primary-color); }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: #334155; display: flex; height: 100vh; overflow: hidden; }
         
-        .dashboard-section { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; margin-bottom: 40px; overflow: hidden; }
-        .section-header { padding: 20px 24px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; background-color: #f8fafc; }
-        .section-header h2 { margin: 0; font-size: 1.25rem; color: #1e293b; font-family: 'Playfair Display', serif; }
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .sidebar-header i { color: var(--primary-color); font-size: 1.5rem; }
+        .sidebar-header h2 { font-family: 'Playfair Display', serif; font-size: 1.25rem; color: var(--secondary-color); font-weight: 700; }
+        
+        .nav-menu { list-style: none; padding: 20px 10px; flex: 1; overflow-y: auto; }
+        .nav-item { margin-bottom: 4px; }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: #64748b;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .nav-link:hover { background-color: #f8fafc; color: var(--secondary-color); }
+        .nav-link.active { background-color: #fff7ed; color: var(--primary-color); }
+        .nav-link i { width: 20px; text-align: center; }
+        
+        .sidebar-footer { padding: 20px; border-top: 1px solid #e2e8f0; }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+            width: calc(100% - var(--sidebar-width));
+        }
+        
+        .top-bar {
+            background: white;
+            padding: 16px 32px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .page-title { font-size: 1.5rem; font-family: 'Playfair Display', serif; color: var(--secondary-color); }
+        
+        .content-area {
+            padding: 32px;
+            overflow-y: auto;
+            flex: 1;
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        
+        .stat-label { font-size: 0.875rem; color: #64748b; font-weight: 500; margin-bottom: 8px; }
+        .stat-value { font-size: 2rem; font-weight: 700; color: var(--secondary-color); }
+        
+        /* Tables */
+        .table-container {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        
+        .table-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .table-title { font-size: 1.1rem; font-weight: 600; color: var(--secondary-color); }
         
         table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 16px 24px; text-align: left; border-bottom: 1px solid #e2e8f0; }
-        th { background-color: #f1f5f9; font-weight: 600; color: #475569; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        th, td { padding: 16px 24px; text-align: left; border-bottom: 1px solid #e2e8f0; font-size: 0.9rem; }
+        th { background-color: #f8fafc; font-weight: 600; color: #475569; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; }
         tr:last-child td { border-bottom: none; }
-        tr:hover { background-color: #f8fafc; }
+        tr:hover { background-color: #fcfcfc; }
         
+        /* Badges & Buttons */
         .badge { padding: 4px 10px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; display: inline-block; }
         .badge-success { background-color: #dcfce7; color: #166534; }
         .badge-pending { background-color: #fef9c3; color: #854d0e; }
+        .badge-blue { background-color: #dbeafe; color: #1e40af; }
         
-        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f1f5f9; z-index: 9999; display: flex; justify-content: center; align-items: center; }
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            color: #475569;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn:hover { background-color: #f8fafc; border-color: #cbd5e1; color: var(--secondary-color); }
+        .btn-danger { color: #ef4444; border-color: #fee2e2; }
+        .btn-danger:hover { background-color: #fef2f2; border-color: #fecaca; }
+        
+        /* Tab Logic */
+        .tab-content { display: none; animation: fadeIn 0.3s ease; }
+        .tab-content.active { display: block; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Login Screen */
+        #login-screen { position: fixed; inset: 0; background: #f1f5f9; z-index: 9999; display: flex; justify-content: center; align-items: center; }
         .login-box { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); width: 100%; max-width: 400px; text-align: center; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s; }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; width: 100%; }
+            .mobile-toggle { display: block; }
+        }
     </style>
 </head>
 <body>
@@ -41,186 +185,321 @@
     <div id="login-screen">
         <div class="login-box">
             <div style="font-size: 3rem; color: var(--primary-color); margin-bottom: 20px;"><i class="fas fa-shield-alt"></i></div>
-            <h2 style="margin-bottom: 10px;">Admin Access</h2>
+            <h2 style="margin-bottom: 10px; font-family: 'Playfair Display', serif;">Admin Access</h2>
             <p style="color: #64748b; margin-bottom: 30px;">Please authenticate to view dashboard</p>
             <input type="password" id="password-input" placeholder="Enter Password" style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; margin-bottom: 20px; font-size: 1rem;">
-            <button onclick="checkLogin()" class="btn" style="width: 100%;">Access Dashboard</button>
+            <button onclick="checkLogin()" class="btn" style="width: 100%; justify-content: center; background: var(--primary-color); color: white; border: none;">Access Dashboard</button>
             <p id="login-error" style="color: #ef4444; display: none; margin-top: 15px; font-size: 0.9rem;">Incorrect password</p>
             <p style="margin-top: 20px; font-size: 0.8rem; color: #94a3b8;">(Password: admin123)</p>
         </div>
     </div>
 
-    <!-- Dashboard Content -->
-    <div id="dashboard-content" style="display: none;">
-        <nav class="admin-navbar">
-            <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
-                <div class="logo"><i class="fas fa-om"></i> ISKCON Admin</div>
-                <div style="display: flex; gap: 15px;">
-                    <button onclick="document.getElementById('orders-section').scrollIntoView({behavior: 'smooth'})" class="btn btn-secondary" style="border-color: #3b82f6; color: #3b82f6; font-size: 0.9rem; padding: 8px 16px;">View Orders</button>
-                    <button onclick="exportToCSV()" class="btn btn-secondary" style="border-color: #16a34a; color: #16a34a; font-size: 0.9rem; padding: 8px 16px;"><i class="fas fa-file-excel"></i> Export to Excel</button>
-                    <button onclick="generateTestData()" class="btn btn-secondary" style="border-color: #cbd5e1; color: #475569; font-size: 0.9rem; padding: 8px 16px;">Generate Test Data</button>
-                    <button onclick="logout()" class="btn btn-secondary" style="border-color: #cbd5e1; color: #475569; font-size: 0.9rem; padding: 8px 16px;">Logout</button>
-                </div>
-            </div>
-        </nav>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <i class="fas fa-om"></i>
+            <h2>ISKCON Admin</h2>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item"><a class="nav-link active" onclick="switchTab('dashboard')"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link" onclick="switchTab('donations')"><i class="fas fa-hand-holding-heart"></i> Donations</a></li>
+            <li class="nav-item"><a class="nav-link" onclick="switchTab('orders')"><i class="fas fa-shopping-bag"></i> Store Orders</a></li>
+            <li class="nav-item"><a class="nav-link" onclick="switchTab('volunteers')"><i class="fas fa-hands-helping"></i> Volunteers</a></li>
+            <li class="nav-item"><a class="nav-link" onclick="switchTab('bookings')"><i class="fas fa-calendar-check"></i> Pooja Bookings</a></li>
+            <li class="nav-item"><a class="nav-link" onclick="switchTab('rsvps')"><i class="fas fa-ticket-alt"></i> Event RSVPs</a></li>
+            <li class="nav-item"><a class="nav-link" onclick="switchTab('users')"><i class="fas fa-users"></i> Registered Users</a></li>
+            <li class="nav-item"><a class="nav-link" onclick="switchTab('messages')"><i class="fas fa-envelope"></i> Messages</a></li>
+            <li class="nav-item"><a class="nav-link" onclick="switchTab('subscribers')"><i class="fas fa-paper-plane"></i> Subscribers</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <button onclick="logout()" class="btn" style="width: 100%; justify-content: center;"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+    </aside>
 
-        <div class="admin-container">
-            <div class="dashboard-stats">
-                <div class="stat-card">
-                    <h3>Total Donations</h3>
-                    <div class="value" id="total-donations">₹0</div>
-                </div>
-                <div class="stat-card">
-                    <h3>Messages</h3>
-                    <div class="value" id="total-messages">0</div>
-                </div>
-                <div class="stat-card">
-                    <h3>Subscribers</h3>
-                    <div class="value" id="total-subscribers">0</div>
-                </div>
-            </div>
-
-            <!-- Donation Breakdown -->
-            <h3 style="margin-bottom: 20px; color: #64748b; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em;">Donation Breakdown</h3>
-            <div class="dashboard-stats" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 40px;">
-                <div class="stat-card" style="border-left: 4px solid #f59e0b;">
-                    <h3>Construction</h3>
-                    <div class="value" id="total-construction" style="font-size: 1.5rem; color: #1e293b;">₹0</div>
-                </div>
-                <div class="stat-card" style="border-left: 4px solid #10b981;">
-                    <h3>Food for Life</h3>
-                    <div class="value" id="total-food" style="font-size: 1.5rem; color: #1e293b;">₹0</div>
-                </div>
-                <div class="stat-card" style="border-left: 4px solid #3b82f6;">
-                    <h3>Goshala</h3>
-                    <div class="value" id="total-goshala" style="font-size: 1.5rem; color: #1e293b;">₹0</div>
-                </div>
-                <div class="stat-card" style="border-left: 4px solid #6366f1;">
-                    <h3>General</h3>
-                    <div class="value" id="total-general" style="font-size: 1.5rem; color: #1e293b;">₹0</div>
-                </div>
-            </div>
-
-            <!-- Donations Table -->
-            <div class="dashboard-section">
-                <div class="section-header">
-                    <h2>Recent Donations</h2>
-                    <button onclick="window.db.clearDonations(); loadData();" style="color: #ef4444; background: none; border: none; cursor: pointer; font-size: 0.85rem;">Clear History</button>
-                </div>
-                <div style="overflow-x: auto;">
-                    <table id="donation-table">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Donor</th>
-                                <th>Purpose</th>
-                                <th>Amount</th>
-                                <th>Email</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- ... -->
-
-            <script>
-                // ...
-                const donationBody = document.querySelector('#donation-table tbody');
-                donationBody.innerHTML = donations.map(d => `
-                    <tr>
-                        <td>${d.date}</td>
-                        <td><div style="font-weight: 600; color: #1e293b;">${d.donor_name || d.donorName || 'Anonymous'}</div></td>
-                        <td><span class="badge badge-pending" style="color: #333; background: #f1f5f9;">${d.purpose || 'General'}</span></td>
-                        <td><div style="font-weight: 600; color: var(--primary-color);">₹${d.amount}</div></td>
-                        <td>${d.email}</td>
-                        <td><span class="badge badge-success">${d.status || 'Completed'}</span></td>
-                    </tr>
-                `).join('') || '<tr><td colspan="6" style="text-align:center; color: #94a3b8; padding: 30px;">No donations recorded yet</td></tr>';
-            </script>
-
-            <!-- Messages Table -->
-            <div class="dashboard-section">
-                <div class="section-header">
-                    <h2>Contact Messages</h2>
-                    <button onclick="window.db.clearContacts(); loadData();" style="color: #ef4444; background: none; border: none; cursor: pointer; font-size: 0.85rem;">Clear Messages</button>
-                </div>
-                <div style="overflow-x: auto;">
-                    <table id="contact-table">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Message</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Orders Table -->
-            <div class="dashboard-section" id="orders-section">
-                <div class="section-header">
-                    <h2>Store Orders</h2>
-                    <button onclick="window.db.clearOrders(); loadData();" style="color: #ef4444; background: none; border: none; cursor: pointer; font-size: 0.85rem;">Clear Orders</button>
-                </div>
-                <div style="overflow-x: auto;">
-                    <table id="orders-table">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Order ID</th>
-                                <th>Customer</th>
-                                <th>Items</th>
-                                <th>Total</th>
-                                <th>Payment</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Subscribers Table -->
-            <div class="dashboard-section">
-                <div class="section-header">
-                    <h2>Newsletter Subscribers</h2>
-                    <button onclick="window.db.clearSubscribers(); loadData();" style="color: #ef4444; background: none; border: none; cursor: pointer; font-size: 0.85rem;">Clear List</button>
-                </div>
-                <table id="sub-table">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Email</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+    <!-- Main Content -->
+    <main class="main-content" id="main-content" style="display: none;">
+        <div class="top-bar">
+            <h1 class="page-title" id="page-title">Dashboard Overview</h1>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="generateTestData()" class="btn"><i class="fas fa-magic"></i> Generate Data</button>
+                <button onclick="exportToCSV()" class="btn"><i class="fas fa-file-export"></i> Export CSV</button>
             </div>
         </div>
+
+        <div class="content-area">
+            
+            <!-- Dashboard Tab -->
+            <div id="tab-dashboard" class="tab-content active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Donations</div>
+                        <div class="stat-value" id="total-donations">₹0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Store Orders</div>
+                        <div class="stat-value" id="total-orders">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Volunteers</div>
+                        <div class="stat-value" id="total-volunteers">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Subscribers</div>
+                        <div class="stat-value" id="total-subscribers">0</div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <div class="table-header">
+                        <div class="table-title">Donation Breakdown</div>
+                    </div>
+                    <div style="padding: 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                        <div>
+                            <div class="stat-label">Construction</div>
+                            <div class="stat-value" id="total-construction" style="font-size: 1.5rem;">₹0</div>
+                        </div>
+                        <div>
+                            <div class="stat-label">Food for Life</div>
+                            <div class="stat-value" id="total-food" style="font-size: 1.5rem;">₹0</div>
+                        </div>
+                        <div>
+                            <div class="stat-label">Goshala</div>
+                            <div class="stat-value" id="total-goshala" style="font-size: 1.5rem;">₹0</div>
+                        </div>
+                        <div>
+                            <div class="stat-label">General</div>
+                            <div class="stat-value" id="total-general" style="font-size: 1.5rem;">₹0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Donations Tab -->
+            <div id="tab-donations" class="tab-content">
+                <div class="table-container">
+                    <div class="table-header">
+                        <div class="table-title">Recent Donations</div>
+                        <button onclick="window.db.clearDonations(); loadData();" class="btn btn-danger"><i class="fas fa-trash"></i> Clear History</button>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table id="donation-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Donor</th>
+                                    <th>Purpose</th>
+                                    <th>Amount</th>
+                                    <th>Email</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders Tab -->
+            <div id="tab-orders" class="tab-content">
+                <div class="table-container">
+                    <div class="table-header">
+                        <div class="table-title">Store Orders</div>
+                        <button onclick="window.db.clearOrders(); loadData();" class="btn btn-danger"><i class="fas fa-trash"></i> Clear Orders</button>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table id="orders-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Items</th>
+                                    <th>Total</th>
+                                    <th>Payment</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Volunteers Tab -->
+            <div id="tab-volunteers" class="tab-content">
+                <div class="table-container">
+                    <div class="table-header">
+                        <div class="table-title">Volunteer Registrations</div>
+                        <button onclick="window.db.clearTable('volunteers'); loadData();" class="btn btn-danger"><i class="fas fa-trash"></i> Clear List</button>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table id="volunteers-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Name</th>
+                                    <th>Phone</th>
+                                    <th>Service Interest</th>
+                                    <th>Preferred Festival</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bookings Tab -->
+            <div id="tab-bookings" class="tab-content">
+                <div class="table-container">
+                    <div class="table-header">
+                        <div class="table-title">Pooja Bookings</div>
+                        <button onclick="window.db.clearTable('bookings'); loadData();" class="btn btn-danger"><i class="fas fa-trash"></i> Clear Bookings</button>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table id="bookings-table">
+                            <thead>
+                                <tr>
+                                    <th>Date Created</th>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Preferred Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RSVPs Tab -->
+            <div id="tab-rsvps" class="tab-content">
+                <div class="table-container">
+                    <div class="table-header">
+                        <div class="table-title">Event RSVPs</div>
+                        <button onclick="window.db.clearTable('rsvps'); loadData();" class="btn btn-danger"><i class="fas fa-trash"></i> Clear RSVPs</button>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table id="rsvps-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Event</th>
+                                    <th>Name</th>
+                                    <th>Phone</th>
+                                    <th>Guests</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Tab -->
+            <div id="tab-users" class="tab-content">
+                <div class="table-container">
+                    <div class="table-header">
+                        <div class="table-title">Registered Users</div>
+                        <button onclick="window.db.clearTable('users'); loadData();" class="btn btn-danger"><i class="fas fa-trash"></i> Clear Users</button>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table id="users-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messages Tab -->
+            <div id="tab-messages" class="tab-content">
+                <div class="table-container">
+                    <div class="table-header">
+                        <div class="table-title">Contact Messages</div>
+                        <button onclick="window.db.clearContacts(); loadData();" class="btn btn-danger"><i class="fas fa-trash"></i> Clear Messages</button>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table id="contact-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Message</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subscribers Tab -->
+            <div id="tab-subscribers" class="tab-content">
+                <div class="table-container">
+                    <div class="table-header">
+                        <div class="table-title">Newsletter Subscribers</div>
+                        <button onclick="window.db.clearSubscribers(); loadData();" class="btn btn-danger"><i class="fas fa-trash"></i> Clear List</button>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table id="sub-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Email</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
         </div>
-        
-        <!-- Debug Area -->
-        <div style="margin-top: 20px; padding: 20px; background: #eee; border-radius: 8px; font-family: monospace; font-size: 0.8rem; color: #333;">
-            <h4>Debug Info (If data is missing, check here)</h4>
-            <div id="debug-output">Loading...</div>
-            <button onclick="forceReload()" style="margin-top: 10px; padding: 5px 10px;">Force Reload Data</button>
-        </div>
-    </div>
+    </main>
 
     <script src="js/database.js"></script>
     <script>
+        // --- UI Logic ---
+        function switchTab(tabId) {
+            // Update Sidebar
+            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+            event.currentTarget.classList.add('active'); // This might fail if called programmatically, handled below
+            
+            // Update Content
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            
+            // Update Title
+            const titles = {
+                'dashboard': 'Dashboard Overview',
+                'donations': 'Donations Management',
+                'orders': 'Store Orders',
+                'volunteers': 'Volunteer Management',
+                'bookings': 'Pooja Bookings',
+                'rsvps': 'Event RSVPs',
+                'users': 'Registered Users',
+                'messages': 'Contact Messages',
+                'subscribers': 'Newsletter Subscribers'
+            };
+            document.getElementById('page-title').textContent = titles[tabId];
+        }
+
         // --- Login Logic ---
         function checkLogin() {
             const pass = document.getElementById('password-input').value;
             if (pass === 'admin123') {
                 document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('dashboard-content').style.display = 'block';
+                document.getElementById('main-content').style.display = 'flex';
                 loadData();
             } else {
                 document.getElementById('login-error').style.display = 'block';
@@ -233,22 +512,15 @@
 
         // --- Data Loading ---
         async function loadData() {
-            if (!window.db) {
-                document.getElementById('debug-output').textContent = 'Error: Database script not loaded!';
-                return;
-            }
-
-            document.getElementById('debug-output').textContent = 'Fetching data from server...';
+            if (!window.db) return;
 
             try {
-                // Donations
+                // 1. Donations
                 const donations = await window.db.getDonations();
-                // API returns DESC, so no need to reverse
-                
                 const totalAmount = donations.reduce((sum, d) => sum + parseFloat(d.amount || 0), 0);
                 document.getElementById('total-donations').textContent = '₹' + totalAmount.toLocaleString();
-
-                // Calculate Breakdown
+                
+                // Breakdown
                 const constructionTotal = donations.filter(d => (d.purpose || '').includes('Construction')).reduce((sum, d) => sum + parseFloat(d.amount || 0), 0);
                 const foodTotal = donations.filter(d => (d.purpose || '').includes('Food')).reduce((sum, d) => sum + parseFloat(d.amount || 0), 0);
                 const goshalaTotal = donations.filter(d => (d.purpose || '').includes('Goshala')).reduce((sum, d) => sum + parseFloat(d.amount || 0), 0);
@@ -258,7 +530,7 @@
                 document.getElementById('total-food').textContent = '₹' + foodTotal.toLocaleString();
                 document.getElementById('total-goshala').textContent = '₹' + goshalaTotal.toLocaleString();
                 document.getElementById('total-general').textContent = '₹' + generalTotal.toLocaleString();
-                
+
                 const donationBody = document.querySelector('#donation-table tbody');
                 donationBody.innerHTML = donations.map(d => `
                     <tr>
@@ -271,38 +543,11 @@
                     </tr>
                 `).join('') || '<tr><td colspan="6" style="text-align:center; color: #94a3b8; padding: 30px;">No donations recorded yet</td></tr>';
 
-                // Contacts
-                const contacts = await window.db.getContacts();
-                // API returns DESC
-                document.getElementById('total-messages').textContent = contacts.length;
-                
-                const contactBody = document.querySelector('#contact-table tbody');
-                contactBody.innerHTML = contacts.map(c => `
-                    <tr>
-                        <td>${c.date}</td>
-                        <td><div style="font-weight: 600; color: #1e293b;">${c.name}</div></td>
-                        <td>${c.email}</td>
-                        <td style="max-width: 300px; line-height: 1.5;">${c.message}</td>
-                    </tr>
-                `).join('') || '<tr><td colspan="4" style="text-align:center; color: #94a3b8; padding: 30px;">No messages received</td></tr>';
-
-                // Subscribers
-                const subs = await window.db.getSubscribers();
-                // API returns DESC
-                document.getElementById('total-subscribers').textContent = subs.length;
-                
-                const subBody = document.querySelector('#sub-table tbody');
-                subBody.innerHTML = subs.map(s => `
-                    <tr>
-                        <td>${s.date}</td>
-                        <td>${s.email}</td>
-                    </tr>
-                `).join('') || '<tr><td colspan="2" style="text-align:center; color: #94a3b8; padding: 30px;">No subscribers yet</td></tr>';
-
-                // Orders
+                // 2. Orders
                 const orders = await window.db.getOrders();
-                const ordersBody = document.querySelector('#orders-table tbody');
+                document.getElementById('total-orders').textContent = orders.length;
                 
+                const ordersBody = document.querySelector('#orders-table tbody');
                 ordersBody.innerHTML = orders.map(o => {
                     let itemsSummary = 'No items';
                     try {
@@ -332,36 +577,100 @@
                     `;
                 }).join('') || '<tr><td colspan="7" style="text-align:center; color: #94a3b8; padding: 30px;">No orders placed yet</td></tr>';
 
+                // 3. Volunteers
+                const volunteers = await window.db.getVolunteers();
+                document.getElementById('total-volunteers').textContent = volunteers.length;
+                
+                const volBody = document.querySelector('#volunteers-table tbody');
+                volBody.innerHTML = volunteers.map(v => `
+                    <tr>
+                        <td>${v.date}</td>
+                        <td><div style="font-weight: 600; color: #1e293b;">${v.name}</div></td>
+                        <td>${v.phone}</td>
+                        <td><span class="badge badge-pending" style="color: #333; background: #f1f5f9;">${v.service}</span></td>
+                        <td>${v.festival || '-'}</td>
+                    </tr>
+                `).join('') || '<tr><td colspan="5" style="text-align:center; color: #94a3b8; padding: 30px;">No volunteers registered yet</td></tr>';
 
-                document.getElementById('debug-output').textContent = 'Data loaded successfully from Python Server.';
+                // 4. Bookings
+                const bookings = await window.db.getBookings();
+                const bookBody = document.querySelector('#bookings-table tbody');
+                bookBody.innerHTML = bookings.map(b => `
+                    <tr>
+                        <td>${b.created_at || b.date}</td>
+                        <td><div style="font-weight: 600; color: #1e293b;">${b.name}</div></td>
+                        <td>${b.type}</td>
+                        <td>${b.date}</td>
+                        <td><span class="badge badge-success">${b.status}</span></td>
+                    </tr>
+                `).join('') || '<tr><td colspan="5" style="text-align:center; color: #94a3b8; padding: 30px;">No bookings made yet</td></tr>';
+
+                // 5. RSVPs
+                const rsvps = await window.db.getRSVPs();
+                const rsvpBody = document.querySelector('#rsvps-table tbody');
+                rsvpBody.innerHTML = rsvps.map(r => `
+                    <tr>
+                        <td>${r.date}</td>
+                        <td><div style="font-weight: 600; color: var(--primary-color);">${r.event_name}</div></td>
+                        <td>${r.name}</td>
+                        <td>${r.phone}</td>
+                        <td>${r.guests}</td>
+                    </tr>
+                `).join('') || '<tr><td colspan="5" style="text-align:center; color: #94a3b8; padding: 30px;">No RSVPs yet</td></tr>';
+
+                // 6. Users
+                const users = await window.db.getUsers();
+                const userBody = document.querySelector('#users-table tbody');
+                userBody.innerHTML = users.map(u => `
+                    <tr>
+                        <td>${u.date}</td>
+                        <td><div style="font-weight: 600; color: #1e293b;">${u.name}</div></td>
+                        <td>${u.email}</td>
+                        <td>${u.phone}</td>
+                    </tr>
+                `).join('') || '<tr><td colspan="4" style="text-align:center; color: #94a3b8; padding: 30px;">No registered users yet</td></tr>';
+
+                // 7. Messages
+                const contacts = await window.db.getContacts();
+                const contactBody = document.querySelector('#contact-table tbody');
+                contactBody.innerHTML = contacts.map(c => `
+                    <tr>
+                        <td>${c.date}</td>
+                        <td><div style="font-weight: 600; color: #1e293b;">${c.name}</div></td>
+                        <td>${c.email}</td>
+                        <td style="max-width: 300px; line-height: 1.5;">${c.message}</td>
+                    </tr>
+                `).join('') || '<tr><td colspan="4" style="text-align:center; color: #94a3b8; padding: 30px;">No messages received</td></tr>';
+
+                // 8. Subscribers
+                const subs = await window.db.getSubscribers();
+                document.getElementById('total-subscribers').textContent = subs.length;
+                
+                const subBody = document.querySelector('#sub-table tbody');
+                subBody.innerHTML = subs.map(s => `
+                    <tr>
+                        <td>${s.date}</td>
+                        <td>${s.email}</td>
+                    </tr>
+                `).join('') || '<tr><td colspan="2" style="text-align:center; color: #94a3b8; padding: 30px;">No subscribers yet</td></tr>';
+
             } catch (err) {
                 console.error(err);
-                document.getElementById('debug-output').textContent = 'Error loading data: ' + err.message;
+                alert('Error loading data: ' + err.message);
             }
         }
 
         async function updateStatus(orderId, newStatus) {
             try {
-                const response = await fetch(`/api/orders/${orderId}/status`, {
+                await fetch(`/api/orders/${orderId}/status`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ status: newStatus })
                 });
-                
-                if (response.ok) {
-                    // alert('Status updated!'); // Optional: too many alerts can be annoying
-                    // Reload to reflect changes if needed, or just let it stay
-                } else {
-                    alert('Failed to update status');
-                }
             } catch (err) {
                 console.error(err);
                 alert('Error updating status');
             }
-        }
-
-        function forceReload() {
-            location.reload();
         }
 
         // --- Export to CSV ---
@@ -372,13 +681,8 @@
                     alert('No data to export!');
                     return;
                 }
-
-                // Define headers
                 const headers = ['Date', 'Order ID', 'Donor Name', 'Email', 'Amount', 'Purpose', 'Status'];
-                
-                // Convert to CSV string
                 const csvRows = [headers.join(',')];
-                
                 donations.forEach(d => {
                     const row = [
                         `"${d.date}"`,
@@ -391,10 +695,7 @@
                     ];
                     csvRows.push(row.join(','));
                 });
-
                 const csvString = csvRows.join('\n');
-                
-                // Create download link
                 const blob = new Blob([csvString], { type: 'text/csv' });
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
@@ -413,10 +714,6 @@
         // --- Test Data Generator ---
         async function generateTestData() {
             if(confirm('Generate sample data?')) {
-                const btn = document.querySelector('button[onclick="generateTestData()"]');
-                btn.disabled = true;
-                btn.innerText = 'Generating...';
-
                 try {
                     await window.db.saveContact({ name: 'Rahul Sharma', email: 'rahul@example.com', phone: '9876543210', message: 'Hare Krishna! I would like to volunteer.' });
                     await window.db.saveContact({ name: 'Priya Patel', email: 'priya@example.com', phone: '9988776655', message: 'When is the next festival?' });
@@ -426,15 +723,22 @@
                     
                     await window.db.saveSubscriber('devotee@example.com');
                     await window.db.saveSubscriber('krishna.bhakta@example.com');
+
+                    await window.db.saveVolunteer({ name: 'Vikram Singh', phone: '9876543210', service: 'Prasadam Distribution', festival: 'Sundays' });
+                    await window.db.saveBooking({ name: 'Anjali Desai', type: 'Narsimha Homa', date: '2024-12-25' });
+                    await window.db.saveRSVP({ eventName: 'Gita Jayanti', name: 'Rohan Mehta', phone: '9123456789', guests: 3 });
+                    
+                    await fetch('/api/register', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name: 'New User', email: 'user@example.com', password: 'password', phone: '1234567890' })
+                    });
                     
                     await loadData();
                     alert('Test data generated!');
                 } catch (error) {
                     console.error('Error generating data:', error);
                     alert('Error generating data');
-                } finally {
-                    btn.disabled = false;
-                    btn.innerText = 'Generate Test Data';
                 }
             }
         }

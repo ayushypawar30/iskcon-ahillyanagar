@@ -165,6 +165,32 @@ const db = {
             console.error('Error fetching RSVPs:', error);
             return [];
         }
+    },
+
+    getUsers: async function () {
+        try {
+            const response = await fetch('/api/users');
+            return await response.json();
+        } catch (error) {
+            console.error('Error fetching users:', error);
+            return [];
+        }
+    },
+
+    clearTable: async function (tableName) {
+        const endpoints = {
+            'volunteers': '/api/volunteers',
+            'bookings': '/api/bookings',
+            'rsvps': '/api/rsvps',
+            'donations': '/api/donations',
+            'contacts': '/api/contacts',
+            'subscribers': '/api/subscribers',
+            'orders': '/api/orders',
+            'users': '/api/users'
+        };
+        if (endpoints[tableName]) {
+            await fetch(endpoints[tableName], { method: 'DELETE' });
+        }
     }
 };
 

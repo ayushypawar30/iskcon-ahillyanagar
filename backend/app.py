@@ -36,6 +36,14 @@ def login():
     else:
         return jsonify({'error': 'Invalid credentials'}), 401
 
+@app.route('/api/users', methods=['GET', 'DELETE'])
+def handle_users():
+    if request.method == 'GET':
+        return jsonify(database.get_users())
+    elif request.method == 'DELETE':
+        database.clear_table('users')
+        return jsonify({'status': 'success', 'message': 'Users cleared'})
+
 @app.route('/api/my-orders', methods=['GET'])
 def my_orders():
     email = request.args.get('email')
@@ -110,32 +118,41 @@ def handle_subscribers():
         database.clear_table('subscribers')
         return jsonify({'status': 'success', 'message': 'Subscribers cleared'})
 
-@app.route('/api/volunteers', methods=['GET', 'POST'])
+@app.route('/api/volunteers', methods=['GET', 'POST', 'DELETE'])
 def handle_volunteers():
     if request.method == 'POST':
         data = request.json
         database.save_volunteer(data)
         return jsonify({'status': 'success', 'message': 'Volunteer registered'})
-    else:
+    elif request.method == 'GET':
         return jsonify(database.get_volunteers())
+    elif request.method == 'DELETE':
+        database.clear_table('volunteers')
+        return jsonify({'status': 'success', 'message': 'Volunteers cleared'})
 
-@app.route('/api/bookings', methods=['GET', 'POST'])
+@app.route('/api/bookings', methods=['GET', 'POST', 'DELETE'])
 def handle_bookings():
     if request.method == 'POST':
         data = request.json
         database.save_booking(data)
         return jsonify({'status': 'success', 'message': 'Booking confirmed'})
-    else:
+    elif request.method == 'GET':
         return jsonify(database.get_bookings())
+    elif request.method == 'DELETE':
+        database.clear_table('bookings')
+        return jsonify({'status': 'success', 'message': 'Bookings cleared'})
 
-@app.route('/api/rsvps', methods=['GET', 'POST'])
+@app.route('/api/rsvps', methods=['GET', 'POST', 'DELETE'])
 def handle_rsvps():
     if request.method == 'POST':
         data = request.json
         database.save_rsvp(data)
         return jsonify({'status': 'success', 'message': 'RSVP confirmed'})
-    else:
+    elif request.method == 'GET':
         return jsonify(database.get_rsvps())
+    elif request.method == 'DELETE':
+        database.clear_table('rsvps')
+        return jsonify({'status': 'success', 'message': 'RSVPs cleared'})
 
 import os
 
