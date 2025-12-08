@@ -156,6 +156,74 @@ def handle_rsvps():
 
 import os
 
+import razorpay
+
+# Razorpay Client Configuration
+# REPLACE THESE WITH YOUR ACTUAL KEYS
+RAZORPAY_KEY_ID = os.environ.get('RAZORPAY_KEY_ID', 'rzp_test_YOUR_KEY_ID')
+RAZORPAY_KEY_SECRET = os.environ.get('RAZORPAY_KEY_SECRET', 'YOUR_KEY_SECRET')
+
+razorpay_client = razorpay.Client(auth=(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET))
+
+@app.route('/api/create-payment-order', methods=['POST'])
+def create_payment_order():
+    try:
+        data = request.json
+        amount = data.get('amount')  # Amount in INR
+        
+        if not amount:
+            return jsonify({'error': 'Amount is required'}), 400
+
+        # Razorpay expects amount in paise (1 INR = 100 paise)
+        amount_paise = int(float(amount) * 100)
+        
+        order_data = {
+            'amount': amount_paise,
+            'currency': 'INR',
+            'payment_capture': 1  # Auto capture
+        }
+        
+        order = razorpay_client.order.create(data=order_data)
+        return jsonify(order)
+    except Exception as e:
+        print(f"Razorpay Error: {e}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/verify-payment', methods=['POST'])
+def verify_payment():
+    try:
+        data = request.json
+        payment_id = data.get('razorpay_payment_id')
+        order_id = data.get('razorpay_order_id')
+        signature = data.get('razorpay_signature')
+        
+        params_dict = {
+            'razorpay_order_id': order_id,
+            'razorpay_payment_id': payment_id,
+            'razorpay_signature': signature
+        }
+        
+        # Verify signature
+        razorpay_client.utility.verify_payment_signature(params_dict)
+        
+        # If verification successful, save donation
+        donation_data = data.get('donation_data')
+        if donation_data:
+            donation_data['transactionId'] = payment_id
+            donation_data['status'] = 'Completed'
+            database.save_donation(donation_data)
+            
+        return jsonify({'status': 'success'})
+    except razorpay.errors.SignatureVerificationError:
+        return jsonify({'error': 'Payment verification failed'}), 400
+    except Exception as e:
+        print(f"Verification Error: {e}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/payment-config', methods=['GET'])
+def get_payment_config():
+    return jsonify({'key': RAZORPAY_KEY_ID})
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     print("Starting ISKCON Server...")
