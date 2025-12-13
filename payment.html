@@ -343,7 +343,6 @@
         </div>
     </div>
 
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="js/database.js"></script>
     <script>
         // --- Initialization ---
@@ -352,138 +351,173 @@
         const name = urlParams.get('name') || 'Anonymous';
         const email = urlParams.get('email') || 'anonymous@example.com';
         const purpose = urlParams.get('type') || 'General Donation';
-        
-        // We will generate orderId from backend now
+        const orderId = 'ISK-' + Math.floor(100000 + Math.random() * 900000);
+
         document.getElementById('display-amount').textContent = '₹' + amount;
         document.getElementById('btn-amount').textContent = '₹' + amount;
-        document.getElementById('order-id').textContent = 'Generating...';
+        document.getElementById('order-id').textContent = '#' + orderId;
+        
+        // ... (rest of code)
 
-        // --- Tab Switching (Visual Only now) ---
+        // --- Verify OTP & Finish ---
+        function verifyPayment() {
+            // ... (validation code)
+
+            setTimeout(() => {
+                try {
+                    if (window.db) {
+                        window.db.saveDonation({
+                            donorName: name,
+                            amount: amount,
+                            email: email,
+                            orderId: orderId,
+                            purpose: purpose
+                        });
+                    } else {
+                        console.warn('Database not loaded');
+                    }
+                } catch (e) {
+                    console.error('Error saving:', e);
+                }
+                
+                window.location.href = 'donation-success.html?name=' + encodeURIComponent(name);
+            }, 2000);
+        }
+
+        // --- Resend OTP ---
+        function resendOTP() {
+            const btn = document.querySelector('p[onclick="resendOTP()"]');
+            if (btn.style.opacity === '0.5') return; // Prevent spamming
+
+            // Generate new OTP
+            currentOTP = Math.floor(1000 + Math.random() * 9000);
+            
+            // Visual feedback
+            btn.textContent = 'Sending...';
+            btn.style.opacity = '0.5';
+            btn.style.cursor = 'not-allowed';
+
+            setTimeout(() => {
+                alert(`💬 RESENT MESSAGE:\n\nYour new OTP is: ${currentOTP}`);
+                btn.textContent = 'Resend OTP';
+                btn.style.opacity = '1';
+                btn.style.cursor = 'pointer';
+            }, 1000);
+        }
+
+        // --- Tab Switching ---
         function switchTab(mode) {
+            // Update Sidebar
             document.querySelectorAll('.method-item').forEach(item => item.classList.remove('active'));
             event.currentTarget.classList.add('active');
+
+            // Update Forms
             document.querySelectorAll('.payment-form').forEach(form => form.classList.remove('active'));
             document.getElementById('form-' + mode).classList.add('active');
         }
 
-        // --- Input Formatting (Visual Only) ---
+        // --- Input Formatting & Validation ---
         function formatCard(input) {
             let value = input.value.replace(/\D/g, '');
             value = value.replace(/(.{4})/g, '$1 ').trim();
             input.value = value;
         }
+
         function formatExpiry(input) {
             let value = input.value.replace(/\D/g, '');
-            if (value.length >= 2) value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
             input.value = value;
         }
-        function validateUPI() { return true; } // No-op
 
-        // --- Process Payment (Razorpay) ---
-        async function processPayment() {
-            const btn = document.getElementById('pay-btn');
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-
-            try {
-                // 1. Create Order on Backend
-                const response = await fetch('/api/create-payment-order', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ amount: amount })
-                });
-                
-                const order = await response.json();
-                
-                if (order.error) {
-                    alert('Error creating order: ' + order.error);
-                    btn.disabled = false;
-                    btn.innerHTML = '<i class="fas fa-lock"></i> Pay ₹' + amount;
-                    return;
+        function validateUPI() {
+            const input = document.getElementById('upi-id');
+            const error = document.getElementById('upi-error');
+            if (input.value.includes('@') && input.value.length > 5) {
+                error.style.display = 'none';
+                input.style.borderColor = '#e2e8f0';
+                return true;
+            } else {
+                if(input.value.length > 0) {
+                    error.style.display = 'block';
+                    input.style.borderColor = '#ef4444';
                 }
-
-                document.getElementById('order-id').textContent = '#' + order.id;
-
-                // Fetch Key ID from backend
-                const configRes = await fetch('/api/payment-config');
-                const config = await configRes.json();
-
-                // 2. Open Razorpay Checkout
-                const options = {
-                    "key": config.key, 
-                    "amount": order.amount,
-                    "currency": "INR",
-                    "name": "ISKCON Ahilyanagar",
-                    "description": purpose,
-                    "image": "images/logo.png", // Ensure this exists or use a URL
-                    "order_id": order.id, 
-                    "handler": async function (response){
-                        // 3. Verify Payment on Backend
-                        verifyPayment(response);
-                    },
-                    "prefill": {
-                        "name": name,
-                        "email": email,
-                        "contact": "" // Can add phone if available
-                    },
-                    "theme": {
-                        "color": "#D35400"
-                    }
-                };
-                
-                const rzp1 = new Razorpay(options);
-                rzp1.on('payment.failed', function (response){
-                    alert("Payment Failed: " + response.error.description);
-                    btn.disabled = false;
-                    btn.innerHTML = '<i class="fas fa-lock"></i> Pay ₹' + amount;
-                });
-                rzp1.open();
-
-            } catch (err) {
-                console.error(err);
-                alert('Something went wrong. Please try again.');
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-lock"></i> Pay ₹' + amount;
+                return false;
             }
         }
 
-        async function verifyPayment(paymentResponse) {
+        // --- Timer Logic ---
+        let timeLeft = 300; // 5 minutes
+        setInterval(() => {
+            if (timeLeft <= 0) return;
+            timeLeft--;
+            const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            const s = (timeLeft % 60).toString().padStart(2, '0');
+            document.getElementById('timer').textContent = `${m}:${s}`;
+        }, 1000);
+
+        let currentOTP = null;
+
+        // --- Process Payment ---
+        function processPayment() {
             const loader = document.getElementById('loader');
             loader.style.display = 'flex';
-            document.getElementById('loader-text').textContent = 'Verifying Payment...';
+            document.getElementById('loader-text').textContent = 'Contacting Bank...';
+            
+            // Generate OTP
+            currentOTP = Math.floor(1000 + Math.random() * 9000);
 
-            try {
-                const verifyRes = await fetch('/api/verify-payment', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        razorpay_payment_id: paymentResponse.razorpay_payment_id,
-                        razorpay_order_id: paymentResponse.razorpay_order_id,
-                        razorpay_signature: paymentResponse.razorpay_signature,
-                        donation_data: {
+            // Simulate delay then show OTP
+            setTimeout(() => {
+                loader.style.display = 'none';
+                document.getElementById('otp-modal').style.display = 'flex';
+                document.getElementById('otp-input').value = ''; // Clear previous input
+                document.getElementById('otp-input').focus();
+                
+                // Simulate SMS
+                setTimeout(() => {
+                    alert(`💬 MESSAGE FROM BANK:\n\nYour OTP for transaction #${orderId} is: ${currentOTP}\n\nDo not share this with anyone.`);
+                }, 500);
+            }, 2000);
+        }
+
+        // --- Verify OTP & Finish ---
+        function verifyPayment() {
+            const inputOtp = document.getElementById('otp-input').value;
+            
+            if (parseInt(inputOtp) !== currentOTP) {
+                alert('❌ INCORRECT OTP!\n\nPlease check the code sent to your mobile and try again.');
+                document.getElementById('otp-input').value = '';
+                document.getElementById('otp-input').focus();
+                return;
+            }
+
+            // Show processing again
+            document.getElementById('otp-modal').style.display = 'none';
+            const loader = document.getElementById('loader');
+            loader.style.display = 'flex';
+            document.getElementById('loader-text').textContent = 'Verifying Transaction...';
+
+            setTimeout(() => {
+                try {
+                    if (window.db) {
+                        window.db.saveDonation({
                             donorName: name,
                             amount: amount,
                             email: email,
-                            purpose: purpose,
-                            // orderId will be the razorpay order id
-                            orderId: paymentResponse.razorpay_order_id 
-                        }
-                    })
-                });
-
-                const result = await verifyRes.json();
-
-                if (result.status === 'success') {
-                    window.location.href = 'donation-success.html?name=' + encodeURIComponent(name) + '&tid=' + paymentResponse.razorpay_payment_id;
-                } else {
-                    alert('Verification failed: ' + result.error);
-                    loader.style.display = 'none';
+                            orderId: orderId,
+                            purpose: purpose
+                        });
+                    } else {
+                        console.warn('Database not loaded');
+                    }
+                } catch (e) {
+                    console.error('Error saving:', e);
                 }
-            } catch (err) {
-                console.error(err);
-                alert('Error verifying payment');
-                loader.style.display = 'none';
-            }
+                
+                window.location.href = 'donation-success.html?name=' + encodeURIComponent(name);
+            }, 2000);
         }
     </script>
 </body>

@@ -116,12 +116,6 @@ def init_db():
         )
     ''')
     
-    # Attempt to add transaction_id column if it doesn't exist (migration)
-    try:
-        c.execute('ALTER TABLE donations ADD COLUMN transaction_id TEXT')
-    except sqlite3.OperationalError:
-        pass # Column likely already exists
-
     conn.commit()
     conn.close()
     print("Database initialized.")
@@ -130,18 +124,9 @@ def save_donation(data):
     conn = sqlite3.connect(DB_NAME)
     c = conn.cursor()
     c.execute('''
-        INSERT INTO donations (donor_name, amount, email, order_id, transaction_id, purpose, status, date)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    ''', (
-        data.get('donorName'), 
-        data.get('amount'), 
-        data.get('email'), 
-        data.get('orderId'), 
-        data.get('transactionId'), 
-        data.get('purpose', 'General'), 
-        data.get('status', 'Completed'), 
-        datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    ))
+        INSERT INTO donations (donor_name, amount, email, order_id, purpose, status, date)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    ''', (data.get('donorName'), data.get('amount'), data.get('email'), data.get('orderId'), data.get('purpose', 'General'), 'Completed', datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
     conn.commit()
     conn.close()
 
