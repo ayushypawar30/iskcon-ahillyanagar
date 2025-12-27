@@ -1,35 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gallery | ISKCON Ahilyanagar</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Outfit:wght@300;400;600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
     <nav class="navbar">
-        <div class="container">
-            <a href="index.html" class="logo"><i class="fas fa-om"></i> ISKCON Ahilyanagar</a>
-            <div class="mobile-menu-btn"><i class="fas fa-bars"></i></div>
-            <ul class="nav-links">
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+            <a href="index.html" class="logo">
+                <img src="images/logo.png" alt="ISKCON Logo">
+            </a>
+
+            <ul class="nav-links" style="margin: 0 auto;">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html">About Us</a></li>
                 <li><a href="services.html">Services</a></li>
                 <li><a href="events.html">Events</a></li>
                 <li><a href="gallery.html" class="active">Gallery</a></li>
-                <li><a href="store.html">Store</a></li>
                 <li><a href="blog.html">Blog</a></li>
                 <li><a href="contact.html">Contact</a></li>
-                <li><a href="donation.html" class="btn">Donate</a></li>
             </ul>
+
+            <div class="nav-right" style="display: flex; align-items: center; gap: 15px;">
+                <img src="images/prabhupada_nav.jpg" alt="Srila Prabhupada"
+                    style="height: 85px; width: auto; border-radius: 50%;">
+                <div class="mobile-menu-btn"><i class="fas fa-bars"></i></div>
+            </div>
         </div>
     </nav>
 
-    <header class="hero" style="height: 40vh; background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('images/temple_hall.png');">
+    <header class="hero"
+        style="height: 40vh; background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('images/temple_hall.png');">
         <div class="container hero-content">
             <h1>Photo Gallery</h1>
             <p>Glimpses of devotion</p>
@@ -39,28 +50,56 @@
     <section class="container" style="padding: 60px 20px;">
         <h2 class="section-title">Images</h2>
         <div class="timings-grid">
-            <img src="images/radha_krishna_gallery.jpg" alt="Radha Krishna" style="width: 100%; height: 250px; object-fit: cover; border-radius: 20px; box-shadow: var(--shadow); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-            <img src="images/gallery_deities_1.jpg" alt="Deities" style="width: 100%; height: 250px; object-fit: cover; border-radius: 20px; box-shadow: var(--shadow); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-            <img src="images/gallery_deities_2.jpg" alt="Deities Close-up" style="width: 100%; height: 250px; object-fit: cover; border-radius: 20px; box-shadow: var(--shadow); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-            <img src="images/gallery_radha_krishna_art.jpg" alt="Radha Krishna Art" style="width: 100%; height: 250px; object-fit: cover; border-radius: 20px; box-shadow: var(--shadow); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-            <img src="images/gallery_temple_top.png" alt="Temple Top View" style="width: 100%; height: 250px; object-fit: cover; border-radius: 20px; box-shadow: var(--shadow); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-            <img src="images/gallery_temple_view.jpg" alt="Temple View" style="width: 100%; height: 250px; object-fit: cover; border-radius: 20px; box-shadow: var(--shadow); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-            <img src="images/temple_hall.png" alt="Temple Hall" style="width: 100%; height: 250px; object-fit: cover; border-radius: 20px; box-shadow: var(--shadow); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-            <img src="images/goshala.png" alt="Goshala" style="width: 100%; height: 250px; object-fit: cover; border-radius: 20px; box-shadow: var(--shadow); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-            <img src="images/puja.png" alt="Deity Worship" style="width: 100%; height: 250px; object-fit: cover; border-radius: 20px; box-shadow: var(--shadow); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-            <img src="images/community.png" alt="Community Service" style="width: 100%; height: 250px; object-fit: cover; border-radius: 20px; box-shadow: var(--shadow); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            <img src="images/radha_krishna_gallery.jpg" alt="Radha Krishna"
+                style="width: 100%; height: 250px; object-fit: cover; border-radius: 20px; box-shadow: var(--shadow); transition: transform 0.3s ease;"
+                onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            <img src="images/gallery_deities_1.jpg" alt="Deities"
+                style="width: 100%; height: 250px; object-fit: cover; object-position: center 90%; border-radius: 20px; box-shadow: var(--shadow); transition: transform 0.3s ease;"
+                onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            <img src="images/gallery_deities_2.jpg" alt="Deities Close-up"
+                style="width: 100%; height: 250px; object-fit: cover; border-radius: 20px; box-shadow: var(--shadow); transition: transform 0.3s ease;"
+                onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            <img src="images/gallery_radha_krishna_art.jpg" alt="Radha Krishna Art"
+                style="width: 100%; height: 250px; object-fit: cover; border-radius: 20px; box-shadow: var(--shadow); transition: transform 0.3s ease;"
+                onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+
+            <!-- New Uploaded Images -->
+            <img src="images/gallery_uploaded_1.jpg" alt="Divine Darshan"
+                style="width: 100%; height: 250px; object-fit: cover; object-position: center 25%; border-radius: 20px; box-shadow: var(--shadow); transition: transform 0.3s ease;"
+                onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            <img src="images/gallery_uploaded_2.jpg" alt="Spiritual Bliss"
+                style="width: 100%; height: 250px; object-fit: cover; object-position: 25% center; border-radius: 20px; box-shadow: var(--shadow); transition: transform 0.3s ease;"
+                onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            <img src="images/gallery_uploaded_3.jpg" alt="Temple Festivities"
+                style="width: 100%; height: 250px; object-fit: cover; border-radius: 20px; box-shadow: var(--shadow); transition: transform 0.3s ease;"
+                onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            <img src="images/gallery_uploaded_4.jpg" alt="Sacred Moments"
+                style="width: 100%; height: 250px; object-fit: cover; border-radius: 20px; box-shadow: var(--shadow); transition: transform 0.3s ease;"
+                onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            <img src="images/gallery_uploaded_5.jpg" alt="Transcendental Art"
+                style="width: 100%; height: 250px; object-fit: cover; object-position: center 10%; border-radius: 20px; box-shadow: var(--shadow); transition: transform 0.3s ease;"
+                onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
         </div>
 
         <h2 class="section-title" style="margin-top: 60px;">Videos</h2>
         <div class="timings-grid">
             <div style="height: 250px; border-radius: 20px; overflow: hidden; box-shadow: var(--shadow);">
-                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/SM2y67MSRXM?si=SyjvJUxEYqC0VQC6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/SM2y67MSRXM?si=SyjvJUxEYqC0VQC6"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
             <div style="height: 250px; border-radius: 20px; overflow: hidden; box-shadow: var(--shadow);">
-                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/zmesOr5b7VI?si=_SXYaS4QXIQY6lXD" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/zmesOr5b7VI?si=_SXYaS4QXIQY6lXD"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
             <div style="height: 250px; border-radius: 20px; overflow: hidden; box-shadow: var(--shadow);">
-                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/Feoea8FQTI0?si=kOYpELIDj7Jkzxuo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/Feoea8FQTI0?si=kOYpELIDj7Jkzxuo"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
         </div>
     </section>
@@ -76,17 +115,23 @@
                 <div class="footer-col">
                     <h3>Connect</h3>
                     <div class="social-links">
-                        <a href="https://www.facebook.com/iskconahilyanagar" target="_blank"><i class="fab fa-facebook"></i></a>
-                        <a href="https://www.instagram.com/iskconahilyanagar" target="_blank"><i class="fab fa-instagram"></i></a>
-                        <a href="https://www.youtube.com/@ISKCONAhilyanagar" target="_blank"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.facebook.com/iskconahilyanagar" target="_blank"><i
+                                class="fab fa-facebook"></i></a>
+                        <a href="https://www.instagram.com/iskconahilyanagar" target="_blank"><i
+                                class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@ISKCONAhilyanagar" target="_blank"><i
+                                class="fab fa-youtube"></i></a>
                     </div>
                     <p style="margin-top: 10px;">Email: info@iskconahillyanagar.com</p>
                 </div>
             </div>
-            <div class="copyright"><p>&copy; 2025 ISKCON Ahilyanagar. All rights reserved.</p></div>
+            <div class="copyright">
+                <p>&copy; 2025 ISKCON Ahilyanagar. All rights reserved.</p>
+            </div>
         </div>
     </footer>
 
     <script src="js/main.js"></script>
 </body>
+
 </html>

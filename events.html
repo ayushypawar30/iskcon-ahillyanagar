@@ -1,35 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Events | ISKCON Ahilyanagar</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Outfit:wght@300;400;600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
     <nav class="navbar">
-        <div class="container">
-            <a href="index.html" class="logo"><i class="fas fa-om"></i> ISKCON Ahilyanagar</a>
-            <div class="mobile-menu-btn"><i class="fas fa-bars"></i></div>
-            <ul class="nav-links">
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+            <a href="index.html" class="logo">
+                <img src="images/logo.png" alt="ISKCON Logo">
+            </a>
+
+            <ul class="nav-links" style="margin: 0 auto;">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html">About Us</a></li>
                 <li><a href="services.html">Services</a></li>
                 <li><a href="events.html" class="active">Events</a></li>
                 <li><a href="gallery.html">Gallery</a></li>
-                <li><a href="store.html">Store</a></li>
                 <li><a href="blog.html">Blog</a></li>
                 <li><a href="contact.html">Contact</a></li>
-                <li><a href="donation.html" class="btn">Donate</a></li>
             </ul>
+
+            <div class="nav-right" style="display: flex; align-items: center; gap: 15px;">
+                <img src="images/prabhupada_nav.jpg" alt="Srila Prabhupada"
+                    style="height: 85px; width: auto; border-radius: 50%;">
+                <div class="mobile-menu-btn"><i class="fas fa-bars"></i></div>
+            </div>
         </div>
     </nav>
 
-    <header class="hero" style="height: 40vh; background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('images/temple_hall.png');">
+    <header class="hero"
+        style="height: 40vh; background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('images/temple_hall.png');">
         <div class="container hero-content">
             <h1>Upcoming Events</h1>
             <p>Join us in celebration</p>
@@ -39,72 +50,94 @@
     <section class="container" style="padding: 60px 20px;">
         <div class="timings-grid">
             <div class="timing-card">
-                <img src="images/gallery_radha_krishna_art.jpg" alt="Gita Jayanti" style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px;">
-                <span style="background: var(--primary-color); color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.8rem;">DEC 25</span>
+                <img src="images/gallery_radha_krishna_art.jpg" alt="Gita Jayanti"
+                    style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px;">
+                <span
+                    style="background: var(--primary-color); color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.8rem;">DEC
+                    25</span>
                 <h3 style="margin-top: 10px;">Gita Jayanti</h3>
                 <p>Celebration of the advent of Bhagavad Gita.</p>
                 <button class="btn" style="margin-top: 10px;" onclick="openRSVP('Gita Jayanti')">RSVP</button>
             </div>
             <div class="timing-card">
-                <img src="images/gallery_temple_view.jpg" alt="Kirtan Mela" style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px;">
-                <span style="background: var(--primary-color); color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.8rem;">JAN 01</span>
+                <img src="images/gallery_temple_view.jpg" alt="Kirtan Mela"
+                    style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px;">
+                <span
+                    style="background: var(--primary-color); color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.8rem;">JAN
+                    01</span>
                 <h3 style="margin-top: 10px;">New Year Kirtan Mela</h3>
                 <p>Welcome the new year with the Holy Names.</p>
                 <button class="btn" style="margin-top: 10px;" onclick="openRSVP('New Year Kirtan Mela')">RSVP</button>
             </div>
             <!-- Added Festivals -->
             <div class="timing-card">
-                <img src="images/radha_krishna_gallery.jpg" alt="Radha Ashtami" style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px;">
-                <span style="background: var(--primary-color); color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.8rem;">UPCOMING</span>
+                <img src="images/radha_krishna_gallery.jpg" alt="Radha Ashtami"
+                    style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px;">
+                <span
+                    style="background: var(--primary-color); color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.8rem;">UPCOMING</span>
                 <h3 style="margin-top: 10px;">Radha Ashtami</h3>
                 <p>Appearance day of Srimati Radharani.</p>
                 <button class="btn" style="margin-top: 10px;" onclick="openRSVP('Radha Ashtami')">RSVP</button>
             </div>
             <div class="timing-card">
-                <img src="images/gallery_deities_1.jpg" alt="Ram Navami" style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px;">
-                <span style="background: var(--primary-color); color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.8rem;">UPCOMING</span>
+                <img src="images/gallery_deities_1.jpg" alt="Ram Navami"
+                    style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px;">
+                <span
+                    style="background: var(--primary-color); color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.8rem;">UPCOMING</span>
                 <h3 style="margin-top: 10px;">Ram Navami</h3>
                 <p>Appearance day of Lord Rama.</p>
                 <button class="btn" style="margin-top: 10px;" onclick="openRSVP('Ram Navami')">RSVP</button>
             </div>
             <div class="timing-card">
-                <img src="images/gallery_deities_2.jpg" alt="Janmashtami" style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px;">
-                <span style="background: var(--primary-color); color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.8rem;">UPCOMING</span>
+                <img src="images/gallery_deities_2.jpg" alt="Janmashtami"
+                    style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px;">
+                <span
+                    style="background: var(--primary-color); color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.8rem;">UPCOMING</span>
                 <h3 style="margin-top: 10px;">Janmashtami</h3>
                 <p>Appearance day of Lord Krishna.</p>
                 <button class="btn" style="margin-top: 10px;" onclick="openRSVP('Janmashtami')">RSVP</button>
             </div>
             <div class="timing-card">
-                <img src="images/gallery_temple_top.png" alt="Chandan Yatra" style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px;">
-                <span style="background: var(--primary-color); color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.8rem;">UPCOMING</span>
+                <img src="images/gallery_temple_top.png" alt="Chandan Yatra"
+                    style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px;">
+                <span
+                    style="background: var(--primary-color); color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.8rem;">UPCOMING</span>
                 <h3 style="margin-top: 10px;">Chandan Yatra</h3>
                 <p>Sandalwood paste festival.</p>
                 <button class="btn" style="margin-top: 10px;" onclick="openRSVP('Chandan Yatra')">RSVP</button>
             </div>
             <div class="timing-card">
-                <img src="images/gallery_deities_1.jpg" alt="Balaram Jayanti" style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px;">
-                <span style="background: var(--primary-color); color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.8rem;">UPCOMING</span>
+                <img src="images/gallery_deities_1.jpg" alt="Balaram Jayanti"
+                    style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px;">
+                <span
+                    style="background: var(--primary-color); color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.8rem;">UPCOMING</span>
                 <h3 style="margin-top: 10px;">Balaram Jayanti</h3>
                 <p>Appearance day of Lord Balarama.</p>
                 <button class="btn" style="margin-top: 10px;" onclick="openRSVP('Balaram Jayanti')">RSVP</button>
             </div>
             <div class="timing-card">
-                <img src="images/gallery_deities_2.jpg" alt="Narsimha Chaturdashi" style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px;">
-                <span style="background: var(--primary-color); color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.8rem;">UPCOMING</span>
+                <img src="images/gallery_deities_2.jpg" alt="Narsimha Chaturdashi"
+                    style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px;">
+                <span
+                    style="background: var(--primary-color); color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.8rem;">UPCOMING</span>
                 <h3 style="margin-top: 10px;">Narsimha Chaturdashi</h3>
                 <p>Appearance day of Lord Narsimha.</p>
                 <button class="btn" style="margin-top: 10px;" onclick="openRSVP('Narsimha Chaturdashi')">RSVP</button>
             </div>
             <div class="timing-card">
-                <img src="images/gallery_temple_view.jpg" alt="Jagannath Snan Yatra" style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px;">
-                <span style="background: var(--primary-color); color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.8rem;">UPCOMING</span>
+                <img src="images/gallery_temple_view.jpg" alt="Jagannath Snan Yatra"
+                    style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px;">
+                <span
+                    style="background: var(--primary-color); color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.8rem;">UPCOMING</span>
                 <h3 style="margin-top: 10px;">Jagannath Snan Yatra</h3>
                 <p>Bathing ceremony of Lord Jagannath.</p>
                 <button class="btn" style="margin-top: 10px;" onclick="openRSVP('Jagannath Snan Yatra')">RSVP</button>
             </div>
             <div class="timing-card">
-                <img src="images/gallery_temple_top.png" alt="Rath Yatra" style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px;">
-                <span style="background: var(--primary-color); color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.8rem;">UPCOMING</span>
+                <img src="images/gallery_temple_top.png" alt="Rath Yatra"
+                    style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px;">
+                <span
+                    style="background: var(--primary-color); color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.8rem;">UPCOMING</span>
                 <h3 style="margin-top: 10px;">Rath Yatra</h3>
                 <p>Chariot festival of Lord Jagannath.</p>
                 <button class="btn" style="margin-top: 10px;" onclick="openRSVP('Rath Yatra')">RSVP</button>
@@ -152,20 +185,25 @@
                 <div class="footer-col">
                     <h3>Connect</h3>
                     <div class="social-links">
-                        <a href="https://www.facebook.com/iskconahilyanagar" target="_blank"><i class="fab fa-facebook"></i></a>
-                        <a href="https://www.instagram.com/iskconahilyanagar" target="_blank"><i class="fab fa-instagram"></i></a>
-                        <a href="https://www.youtube.com/@ISKCONAhilyanagar" target="_blank"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.facebook.com/iskconahilyanagar" target="_blank"><i
+                                class="fab fa-facebook"></i></a>
+                        <a href="https://www.instagram.com/iskconahilyanagar" target="_blank"><i
+                                class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@ISKCONAhilyanagar" target="_blank"><i
+                                class="fab fa-youtube"></i></a>
                     </div>
                     <p style="margin-top: 10px;">Email: info@iskconahillyanagar.com</p>
                 </div>
             </div>
-            <div class="copyright"><p>&copy; 2025 ISKCON Ahilyanagar. All rights reserved.</p></div>
+            <div class="copyright">
+                <p>&copy; 2025 ISKCON Ahilyanagar. All rights reserved.</p>
+            </div>
         </div>
     </footer>
 
     <script src="js/database.js"></script>
     <script src="js/main.js"></script>
-    
+
     <script>
         // Direct RSVP Handler to ensure it works independent of main.js
         function openRSVP(eventName) {
@@ -176,9 +214,9 @@
             const input = document.getElementById('rsvp-event-name');
 
             if (modal && overlay) {
-                if(title) title.innerText = 'RSVP: ' + eventName;
-                if(input) input.value = eventName;
-                
+                if (title) title.innerText = 'RSVP: ' + eventName;
+                if (input) input.value = eventName;
+
                 modal.classList.add('active');
                 overlay.classList.add('active');
                 document.body.style.overflow = 'hidden';
@@ -200,7 +238,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const closeBtn = document.querySelector('#modal-rsvp .close-modal');
             const overlay = document.getElementById('modal-overlay');
-            
+
             if (closeBtn) closeBtn.addEventListener('click', closeRSVPModal);
             if (overlay) overlay.addEventListener('click', closeRSVPModal);
         });
@@ -209,7 +247,7 @@
             event.preventDefault();
             const form = event.target;
             const btn = form.querySelector('button[type="submit"]');
-            
+
             const eventName = document.getElementById('rsvp-event-name').value;
             const name = form.querySelector('input[type="text"]').value;
             const phone = form.querySelector('input[type="tel"]').value;
@@ -237,4 +275,5 @@
         }
     </script>
 </body>
+
 </html>

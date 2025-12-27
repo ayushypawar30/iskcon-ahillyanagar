@@ -44,6 +44,17 @@ def handle_users():
         database.clear_table('users')
         return jsonify({'status': 'success', 'message': 'Users cleared'})
 
+@app.route('/api/book-marathon', methods=['POST'])
+def book_marathon():
+    data = request.json
+    database.save_marathon_order(data)
+    return jsonify({'status': 'success', 'message': 'Booking confirmed'})
+
+@app.route('/api/book-bookings', methods=['GET']) # Renamed to match admin.html expectation if needed, or update admin.html
+def get_marathon_bookings():
+    # Admin.html calls /api/book-bookings for the "Book Marathon" tab
+    return jsonify(database.get_marathon_orders())
+
 @app.route('/api/my-orders', methods=['GET'])
 def my_orders():
     email = request.args.get('email')

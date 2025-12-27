@@ -104,6 +104,20 @@ def init_db():
         )
     ''')
 
+    # Marathon Orders Table (New)
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS marathon_orders (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            phone TEXT,
+            email TEXT,
+            books_summary TEXT,  -- e.g., "Gita (2), Bhagavatam (1)"
+            total_qty INTEGER,
+            status TEXT,         -- "Pending", "Collected"
+            date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+
     # RSVPs Table
     c.execute('''
         CREATE TABLE IF NOT EXISTS rsvps (
@@ -313,6 +327,32 @@ def save_rsvp(data):
               (data.get('eventName'), data.get('name'), data.get('phone'), data.get('guests')))
     conn.commit()
     conn.close()
+
+def save_marathon_order(data):
+    conn = sqlite3.connect(DB_NAME)
+    c = conn.cursor()
+    c.execute('''
+        INSERT INTO marathon_orders (name, phone, email, books_summary, total_qty, status)
+        VALUES (?, ?, ?, ?, ?, ?)
+    ''', (
+        data.get('name'), 
+        data.get('phone'), 
+        data.get('email'), 
+        data.get('books_summary'), 
+        data.get('total_qty'), 
+        'Pending'
+    ))
+    conn.commit()
+    conn.close()
+
+def get_marathon_orders():
+    conn = sqlite3.connect(DB_NAME)
+    conn.row_factory = sqlite3.Row
+    c = conn.cursor()
+    c.execute('SELECT * FROM marathon_orders ORDER BY date DESC')
+    rows = c.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
 
 def get_rsvps():
     conn = sqlite3.connect(DB_NAME)

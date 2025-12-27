@@ -1,36 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us | ISKCON Ahilyanagar</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Outfit:wght@300;400;600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
     <!-- Navbar (Same as index) -->
     <nav class="navbar">
-        <div class="container">
-            <a href="index.html" class="logo"><i class="fas fa-om"></i> ISKCON Ahilyanagar</a>
-            <div class="mobile-menu-btn"><i class="fas fa-bars"></i></div>
-            <ul class="nav-links">
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+            <a href="index.html" class="logo">
+                <img src="images/logo.png" alt="ISKCON Logo">
+            </a>
+
+            <ul class="nav-links" style="margin: 0 auto;">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html" class="active">About Us</a></li>
                 <li><a href="services.html">Services</a></li>
                 <li><a href="events.html">Events</a></li>
                 <li><a href="gallery.html">Gallery</a></li>
-                <li><a href="store.html">Store</a></li>
                 <li><a href="blog.html">Blog</a></li>
                 <li><a href="contact.html">Contact</a></li>
-                <li><a href="donation.html" class="btn">Donate</a></li>
             </ul>
+
+            <div class="nav-right" style="display: flex; align-items: center; gap: 15px;">
+                <img src="images/prabhupada_nav.jpg" alt="Srila Prabhupada"
+                    style="height: 85px; width: auto; border-radius: 50%;">
+                <div class="mobile-menu-btn"><i class="fas fa-bars"></i></div>
+            </div>
         </div>
     </nav>
 
-    <header class="hero" style="height: 40vh; background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('images/temple_hall.png');">
+    <header class="hero"
+        style="height: 40vh; background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('images/temple_hall.png');">
         <div class="container hero-content">
             <h1>About Us</h1>
             <p>Our Mission, Vision, and History</p>
@@ -38,20 +49,79 @@
     </header>
 
     <section class="container" style="padding: 60px 20px;">
-        <h2 class="section-title">Mission & Vision</h2>
-        <p>The International Society for Krishna Consciousness (ISKCON), known colloquially as the Hare Krishna movement or Hare Krishnas, is a Gaudiya Vaishnava religious organization. ISKCON was founded in 1966 in New York City by A. C. Bhaktivedanta Swami Prabhupada.</p>
-        <br>
-        <p>Our mission is to acquaint all people of the world with universal principles of self-realization and God consciousness so that they may derive the highest benefit of spiritual understanding, unity, and peace.</p>
+        <h2 class="section-title">About ISKCON</h2>
+        <div style="max-width: 800px; margin: 0 auto; text-align: center; color: #4b5563; line-height: 1.8;">
+            <p style="margin-bottom: 20px; font-size: 1.1rem;">
+                The International Society for Krishna Consciousness (ISKCON), otherwise known as the Hare Krishna
+                movement, includes five hundred major centers, temples and rural communities, nearly one hundred
+                affiliated vegetarian restaurants, thousands of namahattas or local meeting groups, a wide variety of
+                community projects, and millions of congregational members worldwide. Although less than fifty years on
+                the global stage, ISKCON has expanded widely since its founding by His Divine Grace A. C. Bhaktivedanta
+                Swami Prabhupāda in New York City in 1966.
+            </p>
+        </div>
+    </section>
+
+    <section style="background-color: var(--secondary-bg); padding: 60px 0;">
+        <div class="container">
+            <h2 class="section-title">Our Philosophy & Tradition</h2>
+            <div style="max-width: 900px; margin: 0 auto; text-align: center;">
+                <p style="margin-bottom: 20px;">
+                    ISKCON belongs to the Gaudiya-Vaishnava sampradāya, a monotheistic tradition within the Vedic or
+                    Hindu culture. Philosophically it is based on the Sanskrit texts <strong>Bhagavad–gītā</strong> and
+                    the <strong>Bhagavat Purana</strong>, or Srimad Bhagavatam.
+                </p>
+                <p style="margin-bottom: 30px;">
+                    These are the historic texts of the devotional bhakti yoga tradition, which teaches that the
+                    ultimate goal for all living beings is to reawaken their love for God, or Lord Krishna, the
+                    “all-attractive one”.
+                </p>
+            </div>
+
+            <div
+                style="background: white; border-radius: 20px; padding: 40px; box-shadow: var(--shadow-md); margin-top: 40px; text-align: center; border: 1px solid #e2e8f0;">
+                <h3
+                    style="color: var(--primary-color); font-family: 'Cinzel', serif; margin-bottom: 20px; font-size: 1.8rem;">
+                    The Maha Mantra</h3>
+                <p style="margin-bottom: 20px; font-style: italic; color: #64748b;">
+                    God is known across the world by many names including Allah, Jehovah, Yahweh, Rama, etc. ISKCON
+                    devotees chant God’s names in the form of the maha–mantra, or the great prayer for deliverance:
+                </p>
+                <div
+                    style="background: var(--light-orange); padding: 30px; border-radius: 12px; display: inline-block; margin: 10px 0;">
+                    <p
+                        style="font-size: 1.5rem; font-weight: 700; color: #c2410c; margin-bottom: 10px; font-family: 'Playfair Display', serif;">
+                        Hare Krishna, Hare Krishna, Krishna Krishna, Hare Hare
+                    </p>
+                    <p
+                        style="font-size: 1.5rem; font-weight: 700; color: #c2410c; font-family: 'Playfair Display', serif;">
+                        Hare Rama, Hare Rama, Rama Rama, Hare Hare
+                    </p>
+                </div>
+                <p style="margin-top: 20px; font-size: 0.95rem; color: #64748b;">
+                    The Holy name of Krishna has extraordinary spiritual potency because the name of God is
+                    non-different from God himself.
+                </p>
+            </div>
+        </div>
     </section>
 
     <section style="background-color: var(--white); padding: 60px 0;">
         <div class="container">
             <h2 class="section-title">Founder Acharya</h2>
             <div style="display: flex; gap: 40px; align-items: center; flex-wrap: wrap;">
-                <img src="images/prabhupada.png" alt="Srila Prabhupada" style="border-radius: 20px; max-width: 100%; width: 400px; box-shadow: var(--shadow);">
+                <div style="flex: 0 0 450px; max-width: 100%;">
+                    <img src="images/prabhupada_real.jpg" alt="Srila Prabhupada"
+                        style="width: 100%; height: 320px; border-radius: 20px; box-shadow: var(--shadow-lg); object-fit: cover; transition: transform 0.3s ease;">
+                </div>
                 <div style="flex: 1;">
                     <h3>His Divine Grace A.C. Bhaktivedanta Swami Prabhupada</h3>
-                    <p>Srila Prabhupada appeared in this world in 1896 in Calcutta, India. He first met his spiritual master, Srila Bhaktisiddhanta Sarasvati Gosvami, in Calcutta in 1922. Bhaktisiddhanta Sarasvati, a prominent devotional scholar and the founder of sixty-four branches of Gaudiya Mathas (Vedic institutes), liked this educated young man and convinced him to dedicate his life to teaching Vedic knowledge in the Western world.</p>
+                    <p style="margin-bottom: 15px;">Srila Prabhupada appeared in this world in 1896 in Calcutta, India.
+                        He first met his spiritual
+                        master, Srila Bhaktisiddhanta Sarasvati Gosvami, in Calcutta in 1922.</p>
+                    <p>Bhaktisiddhanta Sarasvati, a prominent devotional scholar and the founder of sixty-four branches
+                        of Gaudiya Mathas, liked this educated young man and convinced him to dedicate his life to
+                        teaching Vedic knowledge in the Western world.</p>
                 </div>
             </div>
         </div>
@@ -59,24 +129,19 @@
 
     <section class="container" style="padding: 60px 20px;">
         <h2 class="section-title">Community Activities</h2>
-        <div style="text-align: center; margin-bottom: 40px;">
-            <img src="images/community.png" alt="Food for Life" style="max-width: 100%; border-radius: 20px; box-shadow: var(--shadow);">
-        </div>
-        <div class="timings-grid">
-            <div class="timing-card">
-                <img src="images/community.png" alt="Food for Life" style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px;">
+        <div style="display: flex; gap: 40px; align-items: center; flex-wrap: wrap; flex-direction: row-reverse;">
+            <!-- Image on Right for visual interest/balance, or Left as requested? User asked for "image at left" for Food for Life previously. 
+                 User request: "make both image in about us of same size make it professionla" and previously "keep imag at lft".
+                 I will keep both on LEFT for consistency as requested. -->
+            <div style="flex: 0 0 450px; max-width: 100%;">
+                <img src="images/food_distribution_real.jpg" alt="Food for Life"
+                    style="width: 100%; height: 320px; border-radius: 20px; box-shadow: var(--shadow-lg); object-fit: cover; transition: transform 0.3s ease;">
+            </div>
+            <div style="flex: 1;">
                 <h3>Food for Life</h3>
-                <p>Distributing free prasadam to the needy.</p>
-            </div>
-            <div class="timing-card">
-                <img src="images/goshala.png" alt="Goshala" style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px;">
-                <h3>Goshala</h3>
-                <p>Protecting and serving cows.</p>
-            </div>
-            <div class="timing-card">
-                <img src="images/hero.png" alt="Youth Programs" style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px;">
-                <h3>Youth Programs</h3>
-                <p>Engaging youth in spirituality.</p>
+                <p>Distributing free prasadam to the needy. We believe that no one within a ten-mile radius of our
+                    center should go hungry. Our Food for Life program is dedicated to ensuring that everyone has access
+                    to healthy, sanctified vegetarian meals.</p>
             </div>
         </div>
     </section>
@@ -93,16 +158,22 @@
                 <div class="footer-col">
                     <h3>Connect</h3>
                     <div class="social-links">
-                        <a href="https://www.facebook.com/iskconahilyanagar" target="_blank"><i class="fab fa-facebook"></i></a>
-                        <a href="https://www.instagram.com/iskconahilyanagar" target="_blank"><i class="fab fa-instagram"></i></a>
-                        <a href="https://www.youtube.com/@ISKCONAhilyanagar" target="_blank"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.facebook.com/iskconahilyanagar" target="_blank"><i
+                                class="fab fa-facebook"></i></a>
+                        <a href="https://www.instagram.com/iskconahilyanagar" target="_blank"><i
+                                class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@ISKCONAhilyanagar" target="_blank"><i
+                                class="fab fa-youtube"></i></a>
                     </div>
                     <p style="margin-top: 10px;">Email: info@iskconahillyanagar.com</p>
                 </div>
             </div>
-            <div class="copyright"><p>&copy; 2025 ISKCON Ahilyanagar. All rights reserved.</p></div>
+            <div class="copyright">
+                <p>&copy; 2025 ISKCON Ahilyanagar. All rights reserved.</p>
+            </div>
         </div>
     </footer>
     <script src="js/main.js"></script>
 </body>
+
 </html>
