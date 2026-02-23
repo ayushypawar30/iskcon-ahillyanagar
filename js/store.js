@@ -173,6 +173,13 @@ function removeFromCart(productId) {
     updateCartCount();
 }
 
+// --- Donation Handling ---
+// Logic moved to donation.html to ensure reliability and avoid caching issues.
+
+function closeModal() {
+    // Moved to donation.html
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     renderProducts();
     updateCartCount();

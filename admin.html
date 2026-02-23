@@ -288,6 +288,7 @@
                         class="fas fa-hands-helping"></i> Volunteers</a></li>
             <li class="nav-item"><a class="nav-link" onclick="switchTab('messages')"><i class="fas fa-envelope"></i>
                     Messages</a></li>
+            <li class="nav-item"><a class="nav-link" onclick="switchTab('donations')"><i class="fas fa-hand-holding-heart"></i> Donations</a></li>
         </ul>
         <div class="sidebar-footer">
             <button onclick="logout()" class="btn" style="width: 100%; justify-content: center;"><i
@@ -303,6 +304,9 @@
                 <button onclick="loadData()" class="btn"><i class="fas fa-sync"></i> Refresh Data</button>
             </div>
         </div>
+        
+        <!-- DEBUG OUTPUT -->
+        <div id="debug-output" style="background: #333; color: #0f0; padding: 10px; margin: 10px; display: none;"></div>
 
         <div class="content-area">
 
@@ -387,6 +391,44 @@
                         </table>
                     </div>
                 </div>
+
+            <!-- Donations Tab -->
+            <div id="tab-donations" class="tab-content">
+                <div class="table-container" style="display: block !important; border: 2px solid red;">
+                    <div class="table-header">
+                        <div class="table-title" style="color: black !important;">Recent Donations (Verification Required)</div>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table id="donations-table" style="width: 100%; border-collapse: collapse; min-height: 100px;">
+                            <thead>
+                                <tr style="background: #eee; color: black;">
+                                    <th>Date</th>
+                                    <th>Donor Name</th>
+                                    <th>Amount</th>
+                                    <th>Scheme</th>
+                                    <th>Mobile / Email</th>
+                                    <th>Screenshot</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- STATIC TEST ROW -->
+                                <tr style="background: #fff; color: black; border-bottom: 1px solid #ccc;">
+                                    <td>TEST DATE</td>
+                                    <td>TEST USER</td>
+                                    <td>999</td>
+                                    <td>TEST SCHEME</td>
+                                    <td>TEST CONTACT</td>
+                                    <td>NO PROOF</td>
+                                    <td>PENDING</td>
+                                    <td>ACTION</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
             </div>
 
         </div>
@@ -422,7 +464,8 @@
                 'dashboard': 'Dashboard Overview',
                 'bookings': 'Book Marathon Management',
                 'volunteers': 'Volunteer Management',
-                'messages': 'Contact Messages'
+                'messages': 'Contact Messages',
+                'donations': 'Donation Verification'
             };
             document.getElementById('page-title').textContent = titles[tabId];
         }
@@ -446,24 +489,94 @@
                         <td><span style="background: #dbeafe; color: #1e40af; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">${b.status}</span></td>
                     </tr>
                 `).join('');
+
+                // 2. Donations
+                console.log("Fetching donations...");
+                const resDonations = await fetch('/api/donations');
+                if (!resDonations.ok) throw new Error(`Donations fetch failed: ${resDonations.status}`);
+                const donations = await resDonations.json();
                 
-                // 2. Volunteers (Legacy endpoint reuse)
-                const res2 = await fetch('/api/volunteers'); // Assumes existing capability or I need to check if endpoint exists? 
-                // Wait, volunteers were in 'database.get_volunteers', accessed via what API?
-                // The previous admin.html used window.db which used /api/...
-                // I need to ensure the API endpoints exist.
-                // admin.html previously used `window.db` abstraction. I'll check if I need to re-add database.js or just fetch directly.
-                // Direct fetch is cleaner.
+                // Hide debug output
+                document.getElementById('debug-output').style.display = 'none';
+
+                const donationsBody = document.querySelector('#donations-table tbody');
+                if (!donationsBody) {
+                    console.error("CRITICAL: tbody not found!");
+                    return;
+                }
                 
-                // Let's assume /api/contacts exists for messages.
-                // Let's assume /api/donations exists (but we removed frontend).
+                // Clear existing
+                donationsBody.innerHTML = '';
+
+                if (donations.length === 0) {
+                    donationsBody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding: 20px;">No donations found</td></tr>';
+                } else {
+                    donations.forEach(d => {
+                        const tr = document.createElement('tr');
+                        tr.style.color = "black";
+                        tr.style.background = "white";
+                        tr.style.borderBottom = "1px solid #e5e7eb";
+                        
+                        tr.innerHTML = `
+                            <td style="padding: 12px;">${d.date}</td>
+                            <td style="font-weight: 600; padding: 12px;">${d.donor_name || 'Anonymous'}</td>
+                            <td style="font-weight: bold; color: var(--primary-color); padding: 12px;">₹${d.amount}</td>
+                            <td style="padding: 12px;">${d.purpose || '-'}</td>
+                            <td style="padding: 12px;">
+                                <div><i class="fas fa-phone" style="font-size:0.8em; width:15px;"></i> ${d.phone || 'N/A'}</div>
+                                <div style="font-size:0.85em; color:#64748b;"><i class="fas fa-envelope" style="font-size:0.8em; width:15px;"></i> ${d.email || '-'}</div>
+                            </td>
+                            <td style="padding: 12px;">
+                                ${d.screenshot ? `<a href="/uploads/donations/${d.screenshot}" target="_blank" class="btn" style="padding: 4px 8px; font-size: 0.8rem; background: #3b82f6; color: white !important;"><i class="fas fa-eye"></i> View</a>` : '<span style="color:#ef4444;">No Proof</span>'}
+                            </td>
+                            <td style="padding: 12px;">
+                                <span style="background: ${d.status === 'Verified' ? '#dcfce7' : '#fff7ed'}; color: ${d.status === 'Verified' ? '#166534' : '#c2410c'}; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600;">${d.status}</span>
+                            </td>
+                           <td style="padding: 12px;">
+                                ${d.status !== 'Verified' ? `<button class="btn" style="background: #22c55e; color: white; padding: 4px 8px; font-size: 0.8rem;" onclick="verifyDonation('${d.order_id}')">Verify</button>` : '<i class="fas fa-check-circle" style="color: #22c55e;"></i>'}
+                            </td>
+                        `;
+                        donationsBody.appendChild(tr);
+                    });
+                }
                 
-                // I might need to verify available APIs.
-                
+                // 3. Messages (Placeholder implementation if API existed)
+                // const res3 = await fetch('/api/contacts');
+                // ...
+
+
             } catch (err) {
                 console.error(err);
+            }
+        }
+        
+        async function verifyDonation(orderId) {
+            if(!confirm('Are you sure you want to verify this donation?')) return;
+            
+            try {
+                const res = await fetch(`/api/donations/${orderId}/status`, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({status: 'Verified'})
+                });
+                
+                const result = await res.json();
+                if(result.status === 'success') {
+                    alert('Donation verified successfully!');
+                    loadData(); // Refresh table
+                } else {
+                    alert('Failed to verify.');
+                }
+            } catch(e) {
+                console.error(e);
+                alert('Error connecting to server.');
             }
         }
     </script>
 </body>
 </html>
+
+
+
+
+

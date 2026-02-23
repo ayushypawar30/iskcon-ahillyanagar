@@ -22,19 +22,25 @@
                 <img src="images/logo.png" alt="ISKCON Logo">
             </a>
 
-            <ul class="nav-links" style="margin: 0 auto;">
+            <ul class="nav-links" >
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html" class="active">About Us</a></li>
                 <li><a href="services.html">Services</a></li>
                 <li><a href="events.html">Events</a></li>
                 <li><a href="gallery.html">Gallery</a></li>
                 <li><a href="blog.html">Blog</a></li>
+                <li><a href="store.html">Store</a></li>
+
                 <li><a href="contact.html">Contact</a></li>
+                <li><a href="donation.html" class="btn-donate">Donate</a></li>
             </ul>
 
             <div class="nav-right" style="display: flex; align-items: center; gap: 15px;">
-                <img src="images/prabhupada_nav.jpg" alt="Srila Prabhupada"
-                    style="height: 85px; width: auto; border-radius: 50%;">
+                <div style="text-align: center;">
+                    <img src="images/prabhupada_nav.jpg" alt="Srila Prabhupada"
+                        style="height: 50px; width: auto; border-radius: 50%; display: block; margin: 0 auto;">
+                    <div style="font-size: 0.8rem; color: var(--text-color); margin-top: 5px; font-weight: 600; white-space: nowrap;">Founder Acharya</div>
+                </div>
                 <div class="mobile-menu-btn"><i class="fas fa-bars"></i></div>
             </div>
         </div>
@@ -82,7 +88,7 @@
                 style="background: white; border-radius: 20px; padding: 40px; box-shadow: var(--shadow-md); margin-top: 40px; text-align: center; border: 1px solid #e2e8f0;">
                 <h3
                     style="color: var(--primary-color); font-family: 'Cinzel', serif; margin-bottom: 20px; font-size: 1.8rem;">
-                    The Maha Mantra</h3>
+                    Maha Mantra</h3>
                 <p style="margin-bottom: 20px; font-style: italic; color: #64748b;">
                     God is known across the world by many names including Allah, Jehovah, Yahweh, Rama, etc. ISKCON
                     devotees chant God’s names in the form of the maha–mantra, or the great prayer for deliverance:
@@ -90,12 +96,14 @@
                 <div
                     style="background: var(--light-orange); padding: 30px; border-radius: 12px; display: inline-block; margin: 10px 0;">
                     <p
-                        style="font-size: 1.5rem; font-weight: 700; color: #c2410c; margin-bottom: 10px; font-family: 'Playfair Display', serif;">
-                        Hare Krishna, Hare Krishna, Krishna Krishna, Hare Hare
+                        style="font-size: 1.5rem; font-weight: 700; color: #c2410c; margin-bottom: 15px; font-family: 'Playfair Display', serif;">
+                        Hare Krishna, Hare Krishna, Krishna Krishna, Hare Hare<br>
+                        Hare Rama, Hare Rama, Rama Rama, Hare Hare
                     </p>
                     <p
-                        style="font-size: 1.5rem; font-weight: 700; color: #c2410c; font-family: 'Playfair Display', serif;">
-                        Hare Rama, Hare Rama, Rama Rama, Hare Hare
+                        style="font-size: 1.6rem; font-weight: 700; color: #9a3412; font-family: 'gotu', sans-serif; line-height: 1.4;">
+                        हरे कृष्ण हरे कृष्ण कृष्ण कृष्ण हरे हरे <br>
+                        हरे राम हरे राम राम राम हरे हरे
                     </p>
                 </div>
                 <p style="margin-top: 20px; font-size: 0.95rem; color: #64748b;">
@@ -148,12 +156,23 @@
 
     <!-- Footer (Same as index) -->
     <!-- Footer -->
-    <footer>
+        <footer>
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-col">
                     <h3>ISKCON Ahilyanagar</h3>
                     <p>International Society for Krishna Consciousness</p>
+                    <p>Founder Acharya: His Divine Grace A.C. Bhaktivedanta Swami Prabhupada</p>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="store.html">Store</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="donation.html" class="btn-donate">Donate</a></li>
+                    </ul>
                 </div>
                 <div class="footer-col">
                     <h3>Connect</h3>
@@ -166,6 +185,17 @@
                                 class="fab fa-youtube"></i></a>
                     </div>
                     <p style="margin-top: 10px;">Email: info@iskconahillyanagar.com</p>
+
+                    <div style="margin-top: 20px;">
+                        <h4 style="font-size: 0.9rem; margin-bottom: 10px;">Newsletter</h4>
+                        <form onsubmit="handleSubscriberSubmit(event)" style="display: flex; gap: 5px;">
+                            <input type="email" placeholder="Your Email" required
+                                style="padding: 8px; border-radius: 4px; border: none; width: 100%;">
+                            <button type="submit" class="btn"
+                                style="padding: 8px 12px; font-size: 0.8rem;">Join</button>
+                        </form>
+                    </div>
+
                 </div>
             </div>
             <div class="copyright">
@@ -177,3 +207,8 @@
 </body>
 
 </html>
+
+
+
+
+

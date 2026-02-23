@@ -23,19 +23,25 @@
                 <img src="images/logo.png" alt="ISKCON Logo">
             </a>
 
-            <ul class="nav-links" style="margin: 0 auto;">
+            <ul class="nav-links" >
                 <li><a href="index.html" class="active">Home</a></li>
                 <li><a href="about.html">About Us</a></li>
                 <li><a href="services.html">Services</a></li>
                 <li><a href="events.html">Events</a></li>
                 <li><a href="gallery.html">Gallery</a></li>
                 <li><a href="blog.html">Blog</a></li>
+                <li><a href="store.html">Store</a></li>
+
                 <li><a href="contact.html">Contact</a></li>
+                <li><a href="donation.html" class="btn-donate">Donate</a></li>
             </ul>
 
             <div class="nav-right" style="display: flex; align-items: center; gap: 15px;">
-                <img src="images/prabhupada_nav.jpg" alt="Srila Prabhupada"
-                    style="height: 85px; width: auto; border-radius: 50%;">
+                <div style="text-align: center;">
+                    <img src="images/prabhupada_nav.jpg" alt="Srila Prabhupada"
+                        style="height: 50px; width: auto; border-radius: 50%; display: block; margin: 0 auto;">
+                    <div style="font-size: 0.8rem; color: var(--text-color); margin-top: 5px; font-weight: 600; white-space: nowrap;">Founder Acharya</div>
+                </div>
                 <div class="mobile-menu-btn"><i class="fas fa-bars"></i></div>
             </div>
         </div>
@@ -47,8 +53,9 @@
             <h1 class="fade-in delay-1">Hare Krishna</h1>
             <p class="fade-in delay-2">Welcome to ISKCON Ahilyanagar. Experience the divine bliss of Lord Krishna's
                 consciousness.</p>
-            <div class="fade-in delay-3">
+            <div class="fade-in delay-3" style="display: flex; gap: 15px; justify-content: center;">
                 <a href="events.html" class="btn">Upcoming Events</a>
+                <a href="donation.html" class="btn">Quick Donate</a>
             </div>
         </div>
     </header>
@@ -88,10 +95,10 @@
                 </div>
             </div>
 
-            <!-- New Marathon Offers Section -->
+            <!-- New Book Section -->
             <h3
                 style="text-align: center; margin-top: 50px; margin-bottom: 30px; font-size: 1.8rem; color: var(--text-color);">
-                Special Marathon Offers</h3>
+                Spiritual Books</h3>
 
             <div class="offers-grid"
                 style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
@@ -104,9 +111,7 @@
                     <h4 style="font-size: 1.2rem; margin-bottom: 10px; color: var(--primary-color);">Bhagavad-Gita
                         (English)</h4>
                     <div class="price" style="margin-bottom: 15px;">
-                        <span
-                            style="text-decoration: line-through; color: #94a3b8; font-size: 1rem; margin-right: 10px;">₹350</span>
-                        <span style="color: #d97706; font-weight: 700; font-size: 1.3rem;">₹240</span>
+                        <span style="color: #d97706; font-weight: 700; font-size: 1.3rem;">₹350</span>
                     </div>
                     <button onclick="openMarathonModal('english')" class="btn"
                         style="width: 100%; padding: 10px; cursor: pointer;">Reserve Now</button>
@@ -120,9 +125,7 @@
                     <h4 style="font-size: 1.2rem; margin-bottom: 10px; color: var(--primary-color);">Bhagavad-Gita
                         (Hindi)</h4>
                     <div class="price" style="margin-bottom: 15px;">
-                        <span
-                            style="text-decoration: line-through; color: #94a3b8; font-size: 1rem; margin-right: 10px;">₹270</span>
-                        <span style="color: #d97706; font-weight: 700; font-size: 1.3rem;">₹200</span>
+                        <span style="color: #d97706; font-weight: 700; font-size: 1.3rem;">₹270</span>
                     </div>
                     <button onclick="openMarathonModal('hindi')" class="btn"
                         style="width: 100%; padding: 10px; cursor: pointer;">Reserve Now</button>
@@ -136,9 +139,7 @@
                     <h4 style="font-size: 1.2rem; margin-bottom: 10px; color: var(--primary-color);">Bhagavad-Gita
                         (Marathi)</h4>
                     <div class="price" style="margin-bottom: 15px;">
-                        <span
-                            style="text-decoration: line-through; color: #94a3b8; font-size: 1rem; margin-right: 10px;">₹240</span>
-                        <span style="color: #d97706; font-weight: 700; font-size: 1.3rem;">₹180</span>
+                        <span style="color: #d97706; font-weight: 700; font-size: 1.3rem;">₹240</span>
                     </div>
                     <button onclick="openMarathonModal('marathi')" class="btn"
                         style="width: 100%; padding: 10px; cursor: pointer;">Reserve Now</button>
@@ -156,23 +157,21 @@
             <div class="timings-grid">
                 <div class="timing-card delay-1">
                     <h3><i class="fas fa-sun"></i> Morning</h3>
-                    <p>Mangala Arati: 4:30 AM</p>
-                    <p>Darshan Arati: 7:15 AM</p>
-                    <p>Guru Puja: 7:30 AM</p>
-                    <p>Srimad Bhagavatam Class: 8:00 AM</p>
+                    <p>Mangala Aarti: 4:30 AM</p>
+                    <p>Srimad Bhagavatam Class: 7:15 AM</p>
+                    <p>Darshan Aarti: 8:00 AM</p>
+                    <p>Guru Puja: 8:05 AM</p>
                 </div>
                 <div class="timing-card delay-2">
                     <h3><i class="fas fa-cloud-sun"></i> Afternoon</h3>
-                    <p>Raj Bhoga Arati: 12:30 PM</p>
                     <p>Temple Closes: 1:00 PM</p>
-                    <p>Temple Opens: 4:15 PM</p>
+                    <p>Temple Opens: 4:30 PM</p>
                 </div>
                 <div class="timing-card delay-3">
                     <h3><i class="fas fa-moon"></i> Evening</h3>
-                    <p>Tulsi Puja: 6:45 PM</p>
-                    <p>Gaura Arati: 7:00 PM</p>
-                    <p>Bhagavad Gita Class: 8:00 PM</p>
-                    <p>Temple Closes: 9:00 PM</p>
+                    <p>Gaura Aarti: 7:00 PM (Ekadashi only)</p>
+                    <p>Shayan Kirtan: 8:00 PM</p>
+                    <p>Temple Closes: 8:30 PM</p>
                 </div>
             </div>
         </div>
@@ -188,7 +187,7 @@
                     <img src="images/radha_krishna_real.png" alt="Sri Sri Radha Kunjabihari" class="darshan-img">
                     <div class="darshan-info">
                         <h3>Sri Sri Radha Kunjabihari</h3>
-                        <p>Mangala Arati Darshan</p>
+                        <p>Mangala Aarti Darshan</p>
                     </div>
                 </div>
                 <div class="darshan-card" onclick="openLightbox('images/puja.png')">
@@ -198,13 +197,7 @@
                         <p>Shringar Darshan</p>
                     </div>
                 </div>
-                <div class="darshan-card" onclick="openLightbox('images/jagannath_real.png')">
-                    <img src="images/jagannath_real.png" alt="Sri Jagannath Baladev Subhadra" class="darshan-img">
-                    <div class="darshan-info">
-                        <h3>Sri Jagannath Baladev Subhadra</h3>
-                        <p>Raj Bhoga Darshan</p>
-                    </div>
-                </div>
+
             </div>
             <div style="text-align: center; margin-top: 40px;">
                 <a href="darshan.html" class="btn btn-secondary">View Full Gallery</a>
@@ -221,7 +214,7 @@
     <div style="height: 60px;"></div>
 
     <!-- Footer -->
-    <footer>
+        <footer>
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-col">
@@ -234,7 +227,8 @@
                     <ul>
                         <li><a href="about.html">About Us</a></li>
                         <li><a href="services.html">Services</a></li>
-                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="store.html">Store</a></li>
+                <li><a href="contact.html">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -263,8 +257,6 @@
             </div>
             <div class="copyright">
                 <p>&copy; 2025 ISKCON Ahilyanagar. All rights reserved.</p>
-                <p style="margin-top: 10px; font-size: 0.8rem;"><a href="admin.html"
-                        style="color: #666; text-decoration: none;">Admin Login</a></p>
             </div>
         </div>
     </footer>
@@ -409,3 +401,7 @@
 </body>
 
 </html>
+
+
+
+

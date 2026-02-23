@@ -92,6 +92,20 @@ def init_db():
     except sqlite3.OperationalError:
         pass # Column likely already exists
 
+    # Migrations for Donations Table
+    try:
+        c.execute('ALTER TABLE donations ADD COLUMN address TEXT')
+    except sqlite3.OperationalError:
+        pass
+    try:
+        c.execute('ALTER TABLE donations ADD COLUMN phone TEXT')
+    except sqlite3.OperationalError:
+        pass
+    try:
+        c.execute('ALTER TABLE donations ADD COLUMN screenshot TEXT')
+    except sqlite3.OperationalError:
+        pass
+
     # Bookings Table (Pooja/Seva)
     c.execute('''
         CREATE TABLE IF NOT EXISTS bookings (
@@ -138,11 +152,31 @@ def save_donation(data):
     conn = sqlite3.connect(DB_NAME)
     c = conn.cursor()
     c.execute('''
-        INSERT INTO donations (donor_name, amount, email, order_id, purpose, status, date)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-    ''', (data.get('donorName'), data.get('amount'), data.get('email'), data.get('orderId'), data.get('purpose', 'General'), 'Completed', datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
+        INSERT INTO donations (donor_name, amount, email, phone, address, screenshot, order_id, purpose, status, date)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ''', (
+        data.get('donorName'), 
+        data.get('amount'), 
+        data.get('email'), 
+        data.get('phone'),
+        data.get('address'),
+        data.get('screenshot'), # Path to file
+        data.get('orderId'), 
+        data.get('purpose', 'General'), 
+        'Pending', # Default to Pending for verification
+        datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    ))
     conn.commit()
     conn.close()
+
+def update_donation_status(order_id, status):
+    conn = sqlite3.connect(DB_NAME)
+    c = conn.cursor()
+    c.execute('UPDATE donations SET status = ? WHERE order_id = ?', (status, order_id))
+    conn.commit()
+    updated = c.rowcount > 0
+    conn.close()
+    return updated
 
 def get_donations():
     conn = sqlite3.connect(DB_NAME)

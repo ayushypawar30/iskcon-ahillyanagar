@@ -90,17 +90,60 @@ def handle_orders():
         orders = database.get_orders()
         return jsonify(orders)
 
+# --- File Upload Configuration ---
+UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../uploads/donations')
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+from werkzeug.utils import secure_filename
+import uuid
+
 @app.route('/api/donations', methods=['GET', 'POST', 'DELETE'])
 def handle_donations():
     if request.method == 'POST':
-        data = request.json
-        database.save_donation(data)
-        return jsonify({'status': 'success', 'message': 'Donation saved'})
+        # Check if it's a multipart request (with file) or JSON
+        if 'screenshot' in request.files:
+            file = request.files['screenshot']
+            filename = None
+            if file and file.filename != '':
+                ext = file.filename.rsplit('.', 1)[1].lower() if '.' in file.filename else 'jpg'
+                unique_name = f"{uuid.uuid4().hex}.{ext}"
+                filename = secure_filename(unique_name)
+                file.save(os.path.join(UPLOAD_FOLDER, filename))
+            
+            # Extract other form fields
+            data = {
+                'donorName': request.form.get('donorName'),
+                'amount': request.form.get('amount'),
+                'email': request.form.get('email'),
+                'phone': request.form.get('phone'),
+                'address': request.form.get('address'),
+                'purpose': request.form.get('scheme'),
+                'orderId': f"DON-{uuid.uuid4().hex[:8].upper()}",
+                'screenshot': filename
+            }
+            database.save_donation(data)
+            return jsonify({'status': 'success', 'message': 'Donation submitted for verification'})
+            
+        else:
+            # Fallback for old JSON requests (if any) or testing
+            data = request.json
+            database.save_donation(data)
+            return jsonify({'status': 'success', 'message': 'Donation saved'})
+
     elif request.method == 'GET':
         return jsonify(database.get_donations())
     elif request.method == 'DELETE':
         database.clear_table('donations')
         return jsonify({'status': 'success', 'message': 'Donations cleared'})
+
+@app.route('/api/donations/<order_id>/status', methods=['PUT'])
+def update_donation_verification(order_id):
+    data = request.json
+    status = data.get('status')
+    if database.update_donation_status(order_id, status):
+        return jsonify({'status': 'success'})
+    else:
+        return jsonify({'error': 'Failed to update'}), 400
 
 @app.route('/api/contacts', methods=['GET', 'POST', 'DELETE'])
 def handle_contacts():

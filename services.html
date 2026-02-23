@@ -21,19 +21,25 @@
                 <img src="images/logo.png" alt="ISKCON Logo">
             </a>
 
-            <ul class="nav-links" style="margin: 0 auto;">
+            <ul class="nav-links" >
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html">About Us</a></li>
                 <li><a href="services.html" class="active">Services</a></li>
                 <li><a href="events.html">Events</a></li>
                 <li><a href="gallery.html">Gallery</a></li>
                 <li><a href="blog.html">Blog</a></li>
+                <li><a href="store.html">Store</a></li>
+                <li><a href="store.html">Store</a></li>
                 <li><a href="contact.html">Contact</a></li>
+                <li><a href="donation.html" class="btn-donate">Donate</a></li>
             </ul>
 
             <div class="nav-right" style="display: flex; align-items: center; gap: 15px;">
-                <img src="images/prabhupada_nav.jpg" alt="Srila Prabhupada"
-                    style="height: 85px; width: auto; border-radius: 50%;">
+                <div style="text-align: center;">
+                    <img src="images/prabhupada_nav.jpg" alt="Srila Prabhupada"
+                        style="height: 50px; width: auto; border-radius: 50%; display: block; margin: 0 auto;">
+                    <div style="font-size: 0.8rem; color: var(--text-color); margin-top: 5px; font-weight: 600; white-space: nowrap;">Founder Acharya</div>
+                </div>
                 <div class="mobile-menu-btn"><i class="fas fa-bars"></i></div>
             </div>
         </div>
@@ -187,12 +193,23 @@
     </div>
 
     <!-- Footer -->
-    <footer>
+        <footer>
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-col">
                     <h3>ISKCON Ahilyanagar</h3>
                     <p>International Society for Krishna Consciousness</p>
+                    <p>Founder Acharya: His Divine Grace A.C. Bhaktivedanta Swami Prabhupada</p>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="store.html">Store</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="donation.html" class="btn-donate">Donate</a></li>
+                    </ul>
                 </div>
                 <div class="footer-col">
                     <h3>Connect</h3>
@@ -205,6 +222,17 @@
                                 class="fab fa-youtube"></i></a>
                     </div>
                     <p style="margin-top: 10px;">Email: info@iskconahillyanagar.com</p>
+
+                    <div style="margin-top: 20px;">
+                        <h4 style="font-size: 0.9rem; margin-bottom: 10px;">Newsletter</h4>
+                        <form onsubmit="handleSubscriberSubmit(event)" style="display: flex; gap: 5px;">
+                            <input type="email" placeholder="Your Email" required
+                                style="padding: 8px; border-radius: 4px; border: none; width: 100%;">
+                            <button type="submit" class="btn"
+                                style="padding: 8px 12px; font-size: 0.8rem;">Join</button>
+                        </form>
+                    </div>
+
                 </div>
             </div>
             <div class="copyright">
@@ -328,3 +356,8 @@
 </body>
 
 </html>
+
+
+
+
+

@@ -1,28 +1,23 @@
 import sqlite3
-import os
 
-DB_NAME = 'iskcon.db'
-
-def inspect_donations():
-    if not os.path.exists(DB_NAME):
-        print("Database not found!")
-        return
-
-    conn = sqlite3.connect(DB_NAME)
-    conn.row_factory = sqlite3.Row
-    c = conn.cursor()
-    
-    print("--- RAW DONATION DATA ---")
-    c.execute('SELECT id, donor_name, amount, purpose FROM donations')
-    rows = c.fetchall()
-    
-    if not rows:
-        print("No donations found.")
-    
-    for row in rows:
-        print(f"ID: {row['id']}, Name: {row['donor_name']}, Amount: {row['amount']}, Purpose: '{row['purpose']}'")
-
-    conn.close()
+def check_db():
+    try:
+        conn = sqlite3.connect('iskcon.db')
+        c = conn.cursor()
+        
+        # Check schema
+        print("--- Table Schema ---")
+        for row in c.execute("PRAGMA table_info(donations)"):
+            print(row)
+            
+        # Check data
+        print("\n--- Recent Donations ---")
+        for row in c.execute("SELECT * FROM donations ORDER BY id DESC LIMIT 5"):
+            print(row)
+            
+        conn.close()
+    except Exception as e:
+        print(f"Error: {e}")
 
 if __name__ == "__main__":
-    inspect_donations()
+    check_db()
