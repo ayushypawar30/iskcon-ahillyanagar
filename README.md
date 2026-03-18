@@ -39,17 +39,7 @@ A fully functional and responsive website developed for ISKCON Ahilyanagar. This
 - Integrated **database for dynamic content**
 - Designed with **user-friendly UI/UX**
 - Deployed live for real-world usage
-- Handles real-time updates for events and temple info
-
----
-
-
-## 📫 Contact
-
-- 📧 Email: yourmail@gmail.com  
-- 🔗 LinkedIn: add-your-link  
-
----
+- Handles real-time updates for events and temple information
 
 ## ⭐ Support
 
