@@ -43,4 +43,14 @@ A fully functional and responsive website developed for ISKCON Ahilyanagar. This
 
 ---
 
-## 📂 Project Structure
+
+## 📫 Contact
+
+- 📧 Email: yourmail@gmail.com  
+- 🔗 LinkedIn: add-your-link  
+
+---
+
+## ⭐ Support
+
+If you like this project, give it a ⭐ on GitHub!
